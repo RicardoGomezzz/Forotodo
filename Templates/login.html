@@ -11,7 +11,7 @@
 
 <body class="bg-info d-flex justify-content-center align-items-center
 vh-100">
-    <div class="bg-white p-5 rounded-5" style="width: 25rem;">
+    <div class="bg-white p-5 rounded-5 shadow" style="width: 25rem;">
         <div class="d-flex justify-content-center">
             <img src="/ForoTodo/img/perfil.png" alt="login-icon" style="height: 7rem;">
         </div>
@@ -20,13 +20,13 @@ vh-100">
             <div class="input-group-text bg-info">
                 <img src="/ForoTodo/img/usuario.png" alt="user-icon" style="height: 1rem;">
             </div>
-            <input class="form-control" type="text" placeholder="Usuario">
+            <input class="form-control bg-light" type="text" placeholder="Usuario">
         </div>
         <div class="input-group mt-2">
             <div class="input-group-text bg-info">
                 <img src="/ForoTodo/img/pass.png" alt="user-icon" style="height: 1rem;">
             </div>
-            <input class="form-control" type="password" placeholder="Contraseña">
+            <input class="form-control bg-light" type="password" placeholder="Contraseña">
         </div>
         <div class="d-flex justify-content-around mt-1">
             <div class="d-flex align-items-center gap-3">
@@ -35,15 +35,19 @@ vh-100">
                 <a href="#" class="pt-1 text-decoration-none text-info fw-semibold fst-italic" style="font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
             </div>
         </div>
-        <div class="btn btn-info text-white w-100 mt-4">Ingresar</div>
+        <div class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm">Ingresar</div>
         <div class="d-flex gap-2 justify-content-center mt-1">
             <div style="font-size: 0.9rem;">¿No tienes cuenta?</div>
             <a href="#" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
         </div>
-        <div>Inicia sesión con</div>
-        <div>
+        <div class="p-3">
+            <div class="border-bottom text-center" style="height: 0.9rem;">
+                <span style="font-size: 1rem;" class="bg-white px-3 ">Ingresar con</span>
+            </div>
+        </div>
+        <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
             <img src="/ForoTodo/img/google.png" alt="" style="height: 1.6rem;">
-            <div>Google</div>
+            <div class="fw-semibold text">Google</div>
         </div>
     </div>
 </body>
