@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,24 +8,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio De Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="/ForoTodo/assets/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
-<body class="bg-dark d-flex justify-content-center align-items-center vh-100">
-    <div class="bg-white p-5 rounded-5 shadow" style="width: 25rem;">
+    <?php require 'partials/header.php' ?>
+
+    <?php if(!empty($message)): ?>
+        <p> <?= $message ?></p>
+    <?php endif; ?>
+
+<body>
+    
+
+    
+    <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
         <div class="d-flex justify-content-center">
-            <img src="/img/perfil.png" alt="login-icon" style="height: 7rem;">
+            <img src="/forotodo/assets/img/perfil.png" alt="login-icon" style="height: 7rem;">
         </div>
         <div class="text-center fs-1 fw-bold">Inicia sesión</div>
-        <form action="archivo.php" method="POST">
+        <form action="/forotodo/php-login/login.php" method="POST">
             <div class="input-group mt-4">
-                <div class="input-group-text bg-info">
-                    <img src="/img/usuario.png" alt="user-icon" style="height: 1rem;">
+                <div class="input-group-text">
+                    <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
                 </div>
                 <input class="form-control bg-light" type="text" name="usuario" placeholder="Usuario">
             </div>
             <div class="input-group mt-2">
-                <div class="input-group-text bg-info">
-                    <img src="/img/pass.png" alt="user-icon" style="height: 1rem;">
+                <div class="input-group-text ">
+                    <img src="/forotodo/assets/img/pass.png" alt="user-icon" style="height: 1rem;">
                 </div>
                 <input class="form-control bg-light" type="password" name="contrasena" placeholder="Contraseña">
             </div>
@@ -35,7 +47,7 @@
                     <a href="#" class="pt-1 text-decoration-none text-info fw-semibold fst-italic" style="font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
-            <button type="submit" class="btn btn-info text-white w-100 mt-4 fw-semibold shadow-sm">Ingresar</button>
+            <button type="submit" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
         </form>
         <div class="d-flex gap-2 justify-content-center mt-1">
             <div style="font-size: 0.9rem;">¿No tienes cuenta?</div>
@@ -47,7 +59,7 @@
             </div>
         </div>
         <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
-            <img src="/img/google.png" alt="" style="height: 1.6rem;">
+            <img src="/forotodo/assets/img/google.png" alt="" style="height: 1.6rem;">
             <div class="fw-semibold">Google</div>
         </div>
     </div>
