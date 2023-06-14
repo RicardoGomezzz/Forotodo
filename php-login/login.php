@@ -1,3 +1,30 @@
+<?php
+
+  session_start();
+
+  if (isset($_SESSION['user_id'])) {
+    header('Location: /forotodo/php-login/login.php');
+  }
+  require 'db.php';
+
+  if (!empty($_POST['email']) && !empty($_POST['password'])) {
+    $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
+    $records->bindParam(':email', $_POST['email']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+
+    $message = '';
+
+    if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
+      $_SESSION['user_id'] = $results['id'];
+      header("Location: /forotodo/php-login/index.php");
+    } else {
+      $message = 'Las credenciales no coinciden ;(';
+    }
+  }
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,15 +39,13 @@
     <link href="/ForoTodo/assets/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
+<body>
+    
     <?php require 'partials/header.php' ?>
 
     <?php if(!empty($message)): ?>
         <p> <?= $message ?></p>
     <?php endif; ?>
-
-<body>
-    
-
     
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
         <div class="d-flex justify-content-center">
@@ -32,13 +57,13 @@
                 <div class="input-group-text">
                     <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
                 </div>
-                <input class="form-control bg-light" type="text" name="usuario" placeholder="Usuario">
+                <input class="form-control bg-light" type="text" name="email" placeholder="Correo">
             </div>
             <div class="input-group mt-2">
                 <div class="input-group-text ">
                     <img src="/forotodo/assets/img/pass.png" alt="user-icon" style="height: 1rem;">
                 </div>
-                <input class="form-control bg-light" type="password" name="contrasena" placeholder="Contraseña">
+                <input class="form-control bg-light" type="password" name="password" placeholder="Contraseña">
             </div>
             <div class="d-flex justify-content-around mt-1">
                 <div class="d-flex align-items-center gap-3">
@@ -47,11 +72,11 @@
                     <a href="#" class="pt-1 text-decoration-none text-info fw-semibold fst-italic" style="font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
-            <button type="submit" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
+            <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
         </form>
         <div class="d-flex gap-2 justify-content-center mt-1">
             <div style="font-size: 0.9rem;">¿No tienes cuenta?</div>
-            <a href="/Templates/register.html" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
+            <a href="/forotodo/php-login/registro.php" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
         </div>
         <div class="p-3">
             <div class="border-bottom text-center" style="height: 0.9rem;">
