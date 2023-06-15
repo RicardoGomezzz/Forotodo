@@ -1,25 +1,50 @@
 <?php
+require 'db.php';
 
-  require 'db.php';
+$message = '';
 
-  $message = '';
+if (!empty($_POST['user']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
+    $user = $_POST['user'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
 
-  if (!empty($_POST['user']) && !empty($_POST['email']) && !empty($_POST['password'])) {
-    $sql = "INSERT INTO users (user, email, password) VALUES (:user, :email, :password)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':user', $_POST['user']);
-    $stmt->bindParam(':email', $_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $stmt->bindParam(':password', $password);
-
-    if ($stmt->execute()) {
-      $message = 'Usuario creado con exito';
+    // Verificar que las contraseñas sean iguales
+    if ($password !== $confirmPassword) {
+        $message = 'Las contraseñas no coinciden';
     } else {
-      $message = 'Ha ocurrido un error al crear su cuenta';
-    }
-  }
-?>
+        // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
+        $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
+        $checkStmt = $conn->prepare($checkQuery);
+        $checkStmt->bindParam(':user', $user);
+        $checkStmt->bindParam(':email', $email);
+        $checkStmt->execute();
+        $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
+        if ($existingUser) {
+            if ($existingUser['user'] === $user) {
+                $message = 'El nombre de usuario ya está en uso';
+            } elseif ($existingUser['email'] === $email) {
+                $message = 'La dirección de correo electrónico ya está en uso';
+            }
+        } else {
+            // Si pasa todas las validaciones, insertar los datos en la base de datos
+            $sql = "INSERT INTO users (user, email, password) VALUES (:user, :email, :password)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':user', $user);
+            $stmt->bindParam(':email', $email);
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            $stmt->bindParam(':password', $hashedPassword);
+
+            if ($stmt->execute()) {
+                $message = 'Usuario creado con éxito';
+            } else {
+                $message = 'Ha ocurrido un error al crear su cuenta';
+            }
+        }
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
