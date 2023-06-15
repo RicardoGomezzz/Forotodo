@@ -1,28 +1,30 @@
 <?php
+session_start();
 
-  session_start();
+if (isset($_SESSION['user_id'])) {
+  // Si el usuario ya ha iniciado sesión, redirige a la página principal
+  header('Location: /forotodo/php-login/index.php');
+  exit; // Asegúrate de agregar esta línea para detener la ejecución del script después de la redirección
+}
 
-  if (isset($_SESSION['user_id'])) {
-    header('Location: /forotodo/php-login/login.php');
+require 'db.php';
+
+if (!empty($_POST['email']) && !empty($_POST['password'])) {
+  $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
+  $records->bindParam(':email', $_POST['email']);
+  $records->execute();
+  $results = $records->fetch(PDO::FETCH_ASSOC);
+
+  $message = '';
+
+  if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
+    $_SESSION['user_id'] = $results['id'];
+    header("Location: /forotodo/php-login/index.php");
+    exit; // Asegúrate de agregar esta línea para detener la ejecución del script después de la redirección
+  } else {
+    $message = 'Las credenciales no coinciden ;(';
   }
-  require 'db.php';
-
-  if (!empty($_POST['email']) && !empty($_POST['password'])) {
-    $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
-    $records->bindParam(':email', $_POST['email']);
-    $records->execute();
-    $results = $records->fetch(PDO::FETCH_ASSOC);
-
-    $message = '';
-
-    if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
-      $_SESSION['user_id'] = $results['id'];
-      header("Location: /forotodo/php-login/index.php");
-    } else {
-      $message = 'Las credenciales no coinciden ;(';
-    }
-  }
-
+}
 ?>
 
 

@@ -4,7 +4,7 @@
   require 'db.php';
 
   if (isset($_SESSION['user_id'])) {
-    $records = $conn->prepare('SELECT id, email, password FROM users WHERE id = :id');
+    $records = $conn->prepare('SELECT id, user, password FROM users WHERE id = :id');
     $records->bindParam(':id', $_SESSION['user_id']);
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
@@ -13,6 +13,7 @@
 
     if (count($results) > 0) {
       $user = $results;
+      $username = $user['user'];
     }
   }
 ?>
@@ -56,12 +57,21 @@
     </div>
     <div class="justify-content-end">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="login.php">Iniciar sesión</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="registro.php">Registro</a>
-        </li>
+        <?php if ($username): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><?php echo $username; ?></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">Cerrar sesión</a>
+          </li>
+        <?php else: ?>
+          <li class="nav-item">
+            <a class="nav-link" href="login.php">Iniciar sesión</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="registro.php">Registro</a>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
