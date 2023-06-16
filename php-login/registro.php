@@ -58,25 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link href="/ForoTodo/assets/css/login.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
     <style>
-        .message {
-            padding: 10px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-align: center;
-        }
 
-        .success {
-            color: white;
-            padding: 10px;
-            font-weight: bold;
-        }
-
-        .error {
-            background-color: #F44336;
-            color: white;
-        }
     </style>
 </head>
 
@@ -86,6 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (!empty($message)) : ?>
         <?= $message ?>
     <?php endif; ?>
+
+    <br><br><br>
 
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
         <div class="d-flex justify-content-center">
