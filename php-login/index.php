@@ -1,7 +1,11 @@
 <?php
   session_start();
 
+  require 'remember.php';
+
   require 'db.php';
+
+  $username = null;
 
   if (isset($_SESSION['user_id'])) {
     $records = $conn->prepare('SELECT id, user, password FROM users WHERE id = :id');
@@ -9,11 +13,8 @@
     $records->execute();
     $results = $records->fetch(PDO::FETCH_ASSOC);
 
-    $user = null;
-
     if (count($results) > 0) {
-      $user = $results;
-      $username = $user['user'];
+      $username = $results['user'];
     }
   }
 ?>

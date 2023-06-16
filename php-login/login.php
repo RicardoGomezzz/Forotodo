@@ -4,28 +4,46 @@ session_start();
 if (isset($_SESSION['user_id'])) {
   // Si el usuario ya ha iniciado sesión, redirige a la página principal
   header('Location: /forotodo/php-login/index.php');
-  exit; // Asegúrate de agregar esta línea para detener la ejecución del script después de la redirección
+  exit;
 }
 
 require 'db.php';
 
 if (!empty($_POST['email']) && !empty($_POST['password'])) {
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
   $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
-  $records->bindParam(':email', $_POST['email']);
+  $records->bindParam(':email', $email);
   $records->execute();
   $results = $records->fetch(PDO::FETCH_ASSOC);
 
   $message = '';
 
-  if (count($results) > 0 && password_verify($_POST['password'], $results['password'])) {
+  if (count($results) > 0 && password_verify($password, $results['password'])) {
     $_SESSION['user_id'] = $results['id'];
+
+    // Si se seleccionó "Recordar sesión"
+    // Si se seleccionó "Recordar sesión"
+  if (!empty($_POST['recordar'])) {
+    // Establece una cookie con el ID de usuario y su duración
+    $cookie_duration = 30 * 24 * 60 * 60; // 30 días en segundos
+    setcookie('user_id', $results['id'], time() + $cookie_duration);
+  } else {
+    // Elimina la cookie "user_id" si existe
+    if (isset($_COOKIE['user_id'])) {
+      setcookie('user_id', '', time() - 3600);
+    }
+  }
+
     header("Location: /forotodo/php-login/index.php");
-    exit; // Asegúrate de agregar esta línea para detener la ejecución del script después de la redirección
+    exit;
   } else {
     $message = 'Las credenciales no coinciden ;(';
   }
 }
 ?>
+
 
 
 <!DOCTYPE html>
