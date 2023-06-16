@@ -4,16 +4,27 @@ require 'db.php';
 $userError = $emailError = $passwordError = $confirmPasswordError = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['user']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm_password'])) {
-        $user = $_POST['user'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $confirmPassword = $_POST['confirm_password'];
+    $user = $_POST['user'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
+
+    // Validar que todos los campos estén completos
+    if (empty($user) || empty($email) || empty($password) || empty($confirmPassword)) {
+        $errorMessage = 'Por favor, completa todos los campos del formulario.';
+    } else {
+        // Validar la longitud de la contraseña
+        if (strlen($password) < 8) {
+            $passwordError = 'La contraseña debe tener al menos 8 caracteres.';
+        }
 
         // Verificar que las contraseñas sean iguales
         if ($password !== $confirmPassword) {
-            $passwordError = 'Las contraseñas no coinciden';
-        } else {
+            $confirmPasswordError = 'Las contraseñas no coinciden.';
+        }
+
+        // Si no hay errores, continuar con el proceso de registro
+        if (empty($passwordError) && empty($confirmPasswordError)) {
             // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
             $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
             $checkStmt = $conn->prepare($checkQuery);
@@ -24,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($existingUser) {
                 if ($existingUser['user'] === $user) {
-                    $userError = 'El nombre de usuario ya está en uso';
+                    $userError = 'El nombre de usuario ya está en uso.';
                 } elseif ($existingUser['email'] === $email) {
-                    $emailError = 'La dirección de correo electrónico ya está en uso';
+                    $emailError = 'La dirección de correo electrónico ya está en uso.';
                 }
             } else {
                 // Si pasa todas las validaciones, insertar los datos en la base de datos
@@ -42,13 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $message = '<div class="message error">Ha ocurrido un error al crear su cuenta</div>';
                 }
-
             }
         }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?= $message ?>
     <?php endif; ?>
 
-    <br><br><br>
+    <br>
 
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
         <div class="d-flex justify-content-center">
@@ -80,11 +89,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="text-center fs-1 fw-bold">Registra tu cuenta</div>
         <form action="/forotodo/php-login/registro.php" method="POST">
+            <?php if (!empty($errorMessage)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $errorMessage ?>
+                </div>
+            <?php endif; ?>
             <div class="input-group mt-4">
                 <div class="input-group-text ">
                     <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($userError)) echo 'is-invalid'; ?>" type="text" name="user" placeholder="Usuario">
+                <input class="form-control bg-light <?php if (!empty($userError)) echo 'is-invalid'; ?>" type="text" name="user" placeholder="Usuario" value="<?= $user ?? '' ?>">
                 <?php if (!empty($userError)) : ?>
                     <div class="invalid-feedback">
                         <?= $userError ?>
@@ -95,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="input-group-text ">
                     <img src="/forotodo/assets/img/email.png" alt="email-icon" style="height: 1rem;">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($emailError)) echo 'is-invalid'; ?>" type="email" name="email" placeholder="Correo electrónico">
+                <input class="form-control bg-light <?php if (!empty($emailError)) echo 'is-invalid'; ?>" type="email" name="email" placeholder="Correo electrónico" value="<?= $email ?? '' ?>">
                 <?php if (!empty($emailError)) : ?>
                     <div class="invalid-feedback">
                         <?= $emailError ?>
@@ -124,23 +138,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
             </div>
-            <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Registrar</button>
-        </form>
-        <br>
-        <div class="d-flex gap-2 justify-content-center mt-1">
-            <div style="font-size: 0.9rem;">¿Ya tienes una cuenta?</div>
-            <a href="/forotodo/php-login/login.php" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Iniciar sesión</a>
-        </div>
-        <div class="p-3">
-            <div class="border-bottom text-center" style="height: 0.9rem;">
-                <span style="font-size: 1rem;" class="bg-white px-3">Regístrate con</span>
+            <div class="text-center mt-4">
+                <button class="btn btn-primary px-5" type="submit">Registrarse</button>
             </div>
-        </div>
-        <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
-            <img src="/forotodo/assets/img/google.png" alt="" style="height: 1.6rem;">
-            <div class="fw-semibold text">Google</div>
+        </form>
+        <div class="text-center mt-4">
+            ¿Ya tienes una cuenta? <a href="/forotodo/php-login/login.php">Inicia sesión</a>
         </div>
     </div>
+
 </body>
 
 </html>

@@ -9,9 +9,15 @@ if (isset($_SESSION['user_id'])) {
 
 require 'db.php';
 
+$message = ''; // Variable para almacenar el mensaje de error
+
 if (!empty($_POST['email']) && !empty($_POST['password'])) {
   $email = $_POST['email'];
   $password = $_POST['password'];
+  // Verificar longitud mínima de la contraseña
+  if (strlen($password) < 8) {
+    $message = 'La contraseña debe tener al menos 8 caracteres.';
+  }else{
 
   $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
   $records->bindParam(':email', $email);
@@ -40,7 +46,11 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
   } else {
     $message = 'Las credenciales no coinciden ;(';
   }
+ }
+} elseif (isset($_POST['email']) || isset($_POST['password'])) {
+  $message = 'Por favor, completa todos los campos.';
 }
+
 ?>
 
 
@@ -62,17 +72,21 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
     
     <?php require 'partials/header.php' ?>
 
-    <?php if(!empty($message)): ?>
-        <p> <?= $message ?></p>
-    <?php endif; ?>
 
-    <br><br><br><br>
+    <br><br>
     
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
         <div class="d-flex justify-content-center">
             <img src="/forotodo/assets/img/perfil.png" alt="login-icon" style="height: 7rem;">
         </div>
         <div class="text-center fs-1 fw-bold">Inicia sesión</div>
+        <div class="text-center">
+            <?php if(!empty($message)): ?>
+                <div class="alert alert-danger mt-3" role="alert">
+                    <?= $message ?>
+                </div>
+            <?php endif; ?>
+        </div>
         <form action="/forotodo/php-login/login.php" method="POST">
             <div class="input-group mt-4">
                 <div class="input-group-text">
@@ -87,7 +101,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
                 <input class="form-control bg-light" type="password" name="password" placeholder="Contraseña">
             </div>
             <div class="d-flex justify-content-around mt-1">
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-itsems-center gap-3">
                     <input class="form-check-input" type="checkbox" name="recordar"> 
                     <div class="pt-1" style="font-size: 0.9rem;">Recuérdame</div>
                     <a href="#" class="pt-1 text-decoration-none text-info fw-semibold fst-italic" style="font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
