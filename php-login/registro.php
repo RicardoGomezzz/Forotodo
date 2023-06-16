@@ -11,20 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validar que todos los campos estén completos
     if (empty($user) || empty($email) || empty($password) || empty($confirmPassword)) {
-        $errorMessage = 'Por favor, completa todos los campos del formulario.';
+        $message = 'Por favor, completa todos los campos del formulario.';
     } else {
         // Validar la longitud de la contraseña
         if (strlen($password) < 8) {
-            $passwordError = 'La contraseña debe tener al menos 8 caracteres.';
+            $message = 'La contraseña debe tener al menos 8 caracteres.';
         }
 
         // Verificar que las contraseñas sean iguales
         if ($password !== $confirmPassword) {
-            $confirmPasswordError = 'Las contraseñas no coinciden.';
+            $message = 'Las contraseñas no coinciden.';
         }
 
         // Si no hay errores, continuar con el proceso de registro
-        if (empty($passwordError) && empty($confirmPasswordError)) {
+        if (empty($message) && empty($message)) {
             // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
             $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
             $checkStmt = $conn->prepare($checkQuery);
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($existingUser) {
                 if ($existingUser['user'] === $user) {
-                    $userError = 'El nombre de usuario ya está en uso.';
+                    $message = 'El nombre de usuario ya está en uso.';
                 } elseif ($existingUser['email'] === $email) {
-                    $emailError = 'La dirección de correo electrónico ya está en uso.';
+                    $message = 'La dirección de correo electrónico ya está en uso.';
                 }
             } else {
                 // Si pasa todas las validaciones, insertar los datos en la base de datos
@@ -77,9 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <?php require 'partials/header.php' ?>
 
-    <?php if (!empty($message)) : ?>
-        <?= $message ?>
-    <?php endif; ?>
+    
 
     <br>
 
@@ -88,6 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <img src="/forotodo/assets/img/agregar-usuario.png" alt="login-icon" style="height: 7rem;">
         </div>
         <div class="text-center fs-1 fw-bold">Registra tu cuenta</div>
+        <div class="text-center">
+            <?php if(!empty($message)): ?>
+                <div class="alert alert-danger mt-3" role="alert">
+                    <?= $message ?>
+                </div>
+            <?php endif; ?>
+        </div>
         <form action="/forotodo/php-login/registro.php" method="POST">
             <?php if (!empty($errorMessage)) : ?>
                 <div class="alert alert-danger" role="alert">
@@ -144,6 +149,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         <div class="text-center mt-4">
             ¿Ya tienes una cuenta? <a href="/forotodo/php-login/login.php">Inicia sesión</a>
+        </div>
+        <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
+            <img src="/forotodo/assets/img/google.png" alt="" style="height: 1.6rem;">
+            <div class="fw-semibold">Google</div>
         </div>
     </div>
 
