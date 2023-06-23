@@ -17,6 +17,7 @@
       $username = $results['user'];
     }
   }
+  $publications = $conn->query('SELECT * FROM publicaciones ORDER BY fecha_publicacion DESC')->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -26,11 +27,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Foro - Barra de Navegación</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/ForoTodo/assets/css/home.css" rel="stylesheet" type="text/css"> 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
 </head>
 <body>
 
@@ -50,6 +56,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Navegar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="agregar.php">Agregar Publicacion</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Perfil</a>
@@ -77,5 +86,22 @@
     </div>
   </div>
 </nav>
+<div class="container">
+  <br>
+  <h2>Publicaciones</h2>
+  <br>
+  <?php foreach ($publications as $publication): ?>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
+        <?php if (!empty($publication['imagen'])): ?>
+        <img src="/ForoTodo/assets/<?php echo $publication['imagen']; ?>" alt="Imagen de la publicación">
+        <?php endif; ?>
+        <p class="card-text"><?php echo $publication['contenido']; ?></p>
+        <p class="card-text">Fecha de publicación: <?php echo $publication['fecha_publicacion']; ?></p>
+      </div>
+    </div>
+  <?php endforeach; ?>
+</div>
 </body>
 </html>
