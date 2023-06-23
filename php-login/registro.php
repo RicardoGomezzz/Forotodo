@@ -15,16 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Validar la longitud de la contraseña
         if (strlen($password) < 8) {
-            $message = 'La contraseña debe tener al menos 8 caracteres.';
+            $passwordError = 'La contraseña debe tener al menos 8 caracteres.';
         }
 
         // Verificar que las contraseñas sean iguales
         if ($password !== $confirmPassword) {
-            $message = 'Las contraseñas no coinciden.';
+            $confirmPasswordError = 'Las contraseñas no coinciden.';
         }
 
         // Si no hay errores, continuar con el proceso de registro
-        if (empty($message) && empty($message)) {
+        if (empty($passwordError) && empty($confirmPasswordError)) {
             // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
             $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
             $checkStmt = $conn->prepare($checkQuery);
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($existingUser) {
                 if ($existingUser['user'] === $user) {
-                    $message = 'El nombre de usuario ya está en uso.';
+                    $userError = 'El nombre de usuario ya está en uso.';
                 } elseif ($existingUser['email'] === $email) {
-                    $message = 'La dirección de correo electrónico ya está en uso.';
+                    $emailError = 'La dirección de correo electrónico ya está en uso.';
                 }
             } else {
                 // Si pasa todas las validaciones, insertar los datos en la base de datos
@@ -61,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
