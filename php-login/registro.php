@@ -49,10 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindParam(':password', $hashedPassword);
 
                 if ($stmt->execute()) {
-                    $message = '<div class="message success">Usuario creado con éxito, ya puedes iniciar sesión</div>';
+                    $message = 'Usuario creado con éxito, ya puedes iniciar sesión';
+                    $messageClass = 'success';
                 } else {
-                    $message = '<div class="message error">Ha ocurrido un error al crear su cuenta</div>';
+                    $message = 'Ha ocurrido un error al crear su cuenta';
+                    $messageClass = 'error';
                 }
+                
             }
         }
     }
@@ -79,20 +82,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     
 
-    <br>
+    <br><br><br>
 
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
         <div class="d-flex justify-content-center">
             <img src="/forotodo/assets/img/agregar-usuario.png" alt="login-icon" style="height: 7rem;">
         </div>
         <div class="text-center fs-1 fw-bold">Registra tu cuenta</div>
-        <div class="text-center">
-            <?php if(!empty($message)): ?>
-                <div class="alert alert-danger mt-3" role="alert">
-                    <?= $message ?>
+        <div class="text-center my-3">
+            <?php if (!empty($message)): ?>
+                <div class="alert <?php echo ($messageClass === 'success') ? 'alert-success' : 'alert-danger'; ?>" role="alert">
+            <?php echo $message; ?>
                 </div>
             <?php endif; ?>
         </div>
+
         <form action="/forotodo/php-login/registro.php" method="POST">
             <?php if (!empty($errorMessage)) : ?>
                 <div class="alert alert-danger" role="alert">
@@ -147,12 +151,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button class="btn btn-primary px-5" type="submit">Registrarse</button>
             </div>
         </form>
-        <div class="text-center mt-4">
-            ¿Ya tienes una cuenta? <a href="/forotodo/php-login/login.php">Inicia sesión</a>
-        </div>
-        <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
-            <img src="/forotodo/assets/img/google.png" alt="" style="height: 1.6rem;">
-            <div class="fw-semibold">Google</div>
+        <br>
+        <div class="d-flex gap-2 justify-content-center mt-1">
+            <div style="font-size: 0.9rem;">¿Ya tienes cuenta?</div>
+            <a href="/forotodo/php-login/login.php" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Inicia Sesión</a>
         </div>
     </div>
 

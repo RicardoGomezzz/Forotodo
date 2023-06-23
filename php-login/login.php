@@ -11,47 +11,45 @@ require 'db.php';
 
 $message = ''; // Variable para almacenar el mensaje de error
 
-if (!empty($_POST['email']) && !empty($_POST['password'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
   $password = $_POST['password'];
-  // Verificar longitud mínima de la contraseña
-  if (strlen($password) < 8) {
-    $message = 'La contraseña debe tener al menos 8 caracteres.';
-  }else{
 
-  $records = $conn->prepare('SELECT id, email, password FROM users WHERE email = :email');
-  $records->bindParam(':email', $email);
-  $records->execute();
-  $results = $records->fetch(PDO::FETCH_ASSOC);
-
-  $message = '';
-
-  if (count($results) > 0 && password_verify($password, $results['password'])) {
-    $_SESSION['user_id'] = $results['id'];
-
-    // Si se seleccionó "Recordar sesión"
-  if (!empty($_POST['recordar'])) {
-    // Establece una cookie con el ID de usuario y su duración
-    $cookie_duration = 30 * 24 * 60 * 60; // 30 días en segundos
-    setcookie('user_id', $results['id'], time() + $cookie_duration);
+  // Validar que ambos campos estén completos
+  if (empty($email) || empty($password)) {
+    $message = 'Por favor, completa todos los campos.';
   } else {
-    // Elimina la cookie "user_id" si existe
-    if (isset($_COOKIE['user_id'])) {
-      setcookie('user_id', '', time() - 3600);
+    $query = "SELECT id, email, password FROM users WHERE email = :email";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+      $_SESSION['user_id'] = $user['id'];
+
+      // Si se seleccionó "Recordar sesión"
+      if (!empty($_POST['recordar'])) {
+        // Establece una cookie con el ID de usuario y su duración
+        $cookie_duration = 30 * 24 * 60 * 60; // 30 días en segundos
+        setcookie('user_id', $user['id'], time() + $cookie_duration);
+      } else {
+        // Elimina la cookie "user_id" si existe
+        if (isset($_COOKIE['user_id'])) {
+          setcookie('user_id', '', time() - 3600);
+        }
+      }
+
+      header("Location: /forotodo/php-login/index.php");
+      exit;
+    } else {
+      $message = 'Las credenciales no coinciden ;(';
     }
   }
-
-    header("Location: /forotodo/php-login/index.php");
-    exit;
-  } else {
-    $message = 'Las credenciales no coinciden ;(';
-  }
- }
-} elseif (isset($_POST['email']) || isset($_POST['password'])) {
-  $message = 'Por favor, completa todos los campos.';
 }
-
 ?>
+
+
 
 
 
@@ -73,7 +71,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
     <?php require 'partials/header.php' ?>
 
 
-    <br><br>
+    <br><br><br><br><br>
     
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
         <div class="d-flex justify-content-center">
@@ -100,6 +98,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
                 </div>
                 <input class="form-control bg-light" type="password" name="password" placeholder="Contraseña">
             </div>
+            <br>
             <div class="d-flex justify-content-around mt-1">
                 <div class="d-flex align-itsems-center gap-3">
                     <input class="form-check-input" type="checkbox" name="recordar"> 
@@ -109,18 +108,10 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
             </div>
             <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
         </form>
+        <br>
         <div class="d-flex gap-2 justify-content-center mt-1">
             <div style="font-size: 0.9rem;">¿No tienes cuenta?</div>
             <a href="/forotodo/php-login/registro.php" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
-        </div>
-        <div class="p-3">
-            <div class="border-bottom text-center" style="height: 0.9rem;">
-                <span style="font-size: 1rem;" class="bg-white px-3 ">Ingresar con</span>
-            </div>
-        </div>
-        <div class="btn d-flex gap-2 justify-content-center border mt-3 shadow-sm">
-            <img src="/forotodo/assets/img/google.png" alt="" style="height: 1.6rem;">
-            <div class="fw-semibold">Google</div>
         </div>
     </div>
 </body>
