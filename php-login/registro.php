@@ -1,4 +1,9 @@
 <?php
+
+require 'remember.php';
+
+session_start();
+
 require 'db.php';
 
 $userError = $emailError = $passwordError = $confirmPasswordError = '';

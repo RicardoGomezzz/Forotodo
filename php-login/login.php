@@ -1,11 +1,8 @@
 <?php
-session_start();
 
-if (isset($_SESSION['user_id'])) {
-  // Si el usuario ya ha iniciado sesión, redirige a la página principal
-  header('Location: /forotodo/php-login/index.php');
-  exit;
-}
+require 'remember.php';
+
+session_start();
 
 require 'db.php';
 
