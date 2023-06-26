@@ -18,16 +18,13 @@
         <li class="nav-item">
           <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar Publicacion</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/forotodo/php-login/perfil.php">Perfil</a>
-        </li>
       </ul>
     </div>
     <div class="justify-content-end">
       <ul class="navbar-nav">
         <?php if ($username): ?>
           <li class="nav-item">
-            <a class="nav-link" href="#"><?php echo $username; ?></a>
+            <a class="nav-link" href="/forotodo/php-login/perfil.php"><?php echo $username; ?></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="logout.php">Cerrar sesión</a>
