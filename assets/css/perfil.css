@@ -1,0 +1,84 @@
+body {
+    background-color: cadetblue;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.card {
+    width: 1250px;
+    max-width: 100%;
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    height: 100%;
+    overflow: auto;
+    margin-top: 50px;
+}
+
+.card-title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.card-body form {
+    margin-top: 30px;
+}
+
+
+.form-label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #1A57A1;
+}
+
+.rounded-circle {
+    margin-top: 30px;
+}
+
+#editPhotoBtn {
+    margin-top: 20px;
+}
+
+@media (max-width: 992px) {
+  .card {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+.custom-position-left {
+    margin-right: auto; 
+    margin-left: 150px;
+  }
+  
+.custom-position-right {
+    margin-right: 70px; 
+    margin-left: 0; 
+  }
+
+.btn{
+    background-color: #2D7BDB;
+    border: none;
+}

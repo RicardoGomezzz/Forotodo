@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-require 'remember.php';
+require '../php-login/remember.php';
 
-require 'db.php';
+require '../php-login/db.php';
 
 $username = null;
 
@@ -22,30 +22,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Obtener los valores ingresados por el usuario
   $titulo = $_POST['titulo'];
   $contenido = $_POST['contenido'];
-  $imagen = $_FILES['imagen']['name'];
-  $imagen_temporal = $_FILES['imagen']['tmp_name'];
-  $carpeta_destino = 'img/';
-  $imagen_ruta = $carpeta_destino . basename($_FILES['imagen']['name']);
-  if (move_uploaded_file($imagen_temporal, $imagen_ruta)) {
-    // El archivo se ha movido correctamente, ahora puedes guardar la ruta en la base de datos
-} else {
-    // Hubo un error al mover el archivo
-}
+
+  // Verificar si se ha seleccionado un archivo de imagen
+  if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+    $imagen = $_FILES['imagen']['name'];
+    $imagen_temporal = $_FILES['imagen']['tmp_name'];
+    $carpeta_destino = 'img/';
+    $imagen_ruta = $carpeta_destino . basename($_FILES['imagen']['name']);
+
+    if (move_uploaded_file($imagen_temporal, $imagen_ruta)) {
+      // El archivo se ha movido correctamente, ahora puedes guardar la ruta en la base de datos
+    } else {
+      // Hubo un error al mover el archivo
+    }
+  } else {
+    // No se ha seleccionado una imagen, establece la ruta como nula
+    $imagen_ruta = null;
+  }
+
   // Insertar la publicación en la base de datos
-  $stmt = $conn->prepare("INSERT INTO publicaciones (titulo, contenido, imagen) VALUES (:titulo, :contenido, :imagen)");
+  $stmt = $conn->prepare("INSERT INTO publicaciones (titulo, contenido, imagen, fecha_publicacion) VALUES (:titulo, :contenido, :imagen, CURRENT_TIMESTAMP)");
   $stmt->bindParam(':titulo', $titulo);
   $stmt->bindParam(':contenido', $contenido);
   $stmt->bindParam(':imagen', $imagen_ruta);
   $stmt->execute();
 
   // Redireccionar al index o a la página deseada después de agregar la publicación
-  header("Location: index.php");
+  header("Location: /forotodo/php-login/index.php");
   exit();
 }
-echo 'Error al subir la imagen: ' . $_FILES['imagen']['error'];
-echo 'Ruta de la imagen: ' . $imagen_ruta;
-
-
 ?>
 
 <!DOCTYPE html>
@@ -59,14 +64,12 @@ echo 'Ruta de la imagen: ' . $imagen_ruta;
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Resto del código de la barra de navegación -->
-</nav>
+<?php include '../php-login/partials/nav.php'; ?>
 
 <div class="container">
   <h2>Agregar Publicación</h2>
   <form method="POST" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-      <div class="mb-3">
+    <div class="mb-3">
       <label for="titulo" class="form-label">Título</label>
       <input type="text" class="form-control" id="titulo" name="titulo" required>
     </div>
@@ -75,8 +78,8 @@ echo 'Ruta de la imagen: ' . $imagen_ruta;
       <textarea class="form-control" id="contenido" name="contenido" rows="5" required></textarea>
     </div>
     <div class="mb-3">
-    <label for="imagen" class="form-label">Imagen</label>
-    <input type="file" class="form-control" id="imagen" name="imagen">
+      <label for="imagen" class="form-label">Imagen</label>
+      <input type="file" class="form-control" id="imagen" name="imagen">
     </div>
     <button type="submit" class="btn btn-primary">Agregar</button>
   </form>
