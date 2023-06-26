@@ -1,12 +1,18 @@
 <?php
 
-require 'remember.php';
-
 session_start();
+
+require 'remember.php';
 
 require 'db.php';
 
 $message = ''; // Variable para almacenar el mensaje de error
+
+// Verificar si ya existe una sesión activa
+if (isset($_SESSION['user_id'])) {
+  header("Location: /forotodo/php-login/index.php");
+  exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
@@ -114,3 +120,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
+
