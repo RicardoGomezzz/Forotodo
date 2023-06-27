@@ -1,18 +1,13 @@
 <?php
 
-session_start();
+require 'db.php';
 
 require 'remember.php';
 
-require 'db.php';
+session_start();
+
 
 $message = ''; // Variable para almacenar el mensaje de error
-
-// Verificar si ya existe una sesión activa
-if (isset($_SESSION['user_id'])) {
-  header("Location: /forotodo/php-login/index.php");
-  exit;
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
@@ -20,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // Validar que ambos campos estén completos
   if (empty($email) || empty($password)) {
-    $message = 'Por favor, completa todos los campos.';
+    $message = 'Por favor, completa todos los campos';
   } else {
     $query = "SELECT id, email, password FROM users WHERE email = :email";
     $stmt = $conn->prepare($query);
@@ -120,4 +115,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
-

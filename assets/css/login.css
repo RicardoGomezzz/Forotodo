@@ -26,21 +26,5 @@ header {
     background-color: cadetblue;
   }
 
-  .message {
-    padding: 10px;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: center;
-}
 
-.success {
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-}
-
-.error {
-    background-color: #F44336;
-    color: white;
-}
 
