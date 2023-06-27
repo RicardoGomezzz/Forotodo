@@ -1,11 +1,36 @@
 <?php
-
 require 'db.php';
-
-require 'remember.php';
 
 session_start();
 
+// Verificar si ya hay una sesión activa
+if (isset($_SESSION['user_id'])) {
+  header("Location: /forotodo/php-login/index.php");
+  exit;
+}
+
+// Verificar si ya existe una cookie con una sesión activa
+if (isset($_COOKIE['user_id'])) {
+  $user_id = $_COOKIE['user_id'];
+
+  // Buscar al usuario en la base de datos por su ID
+  $query = "SELECT id FROM users WHERE id = :user_id";
+  $stmt = $conn->prepare($query);
+  $stmt->bindParam(':user_id', $user_id);
+  $stmt->execute();
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($user) {
+    $_SESSION['user_id'] = $user['id'];
+    header("Location: /forotodo/php-login/index.php");
+    exit;
+  } else {
+    // Eliminar la cookie "user_id" si el usuario no existe en la base de datos
+    setcookie('user_id', '', time() - 3600);
+  }
+}
+
+require 'remember.php';
 
 $message = ''; // Variable para almacenar el mensaje de error
 
@@ -115,3 +140,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
+

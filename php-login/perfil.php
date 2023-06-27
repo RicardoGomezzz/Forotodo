@@ -5,9 +5,10 @@ require '../php-login/db.php';
 
 $username = null;
 $email = null;
+$nombre = null;
 
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT id, user, email FROM users WHERE id = :id');
+  $records = $conn->prepare('SELECT id, user, email, nombre FROM users WHERE id = :id');
   $records->bindParam(':id', $_SESSION['user_id']);
   $records->execute();
   $results = $records->fetch(PDO::FETCH_ASSOC);
@@ -15,6 +16,31 @@ if (isset($_SESSION['user_id'])) {
   if (count($results) > 0) {
     $username = $results['user'];
     $email = $results['email'];
+    $nombre = $results['nombre'];
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $newNombre = $_POST['nombre'];
+    $newUsername = $_POST['username'];
+    $newEmail = $_POST['email'];
+    $newPassword = $_POST['password'];
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $updateQuery = $conn->prepare('UPDATE users SET nombre = :nombre, user = :username, email = :email, password = :password WHERE id = :id');
+    $updateQuery->bindParam(':nombre', $newNombre);
+    $updateQuery->bindParam(':username', $newUsername);
+    $updateQuery->bindParam(':email', $newEmail);
+    $updateQuery->bindParam(':password', $hashedPassword);
+    $updateQuery->bindParam(':id', $_SESSION['user_id']);
+
+    if ($updateQuery->execute()) {
+      // Actualización exitosa, redirigir a la página de perfil o mostrar un mensaje de éxito
+      header('Location: perfil.php');
+      exit;
+    } else {
+      // Error al actualizar, mostrar un mensaje de error
+      echo 'Error al actualizar los datos';
+    }
   }
 }
 ?>
@@ -48,44 +74,43 @@ if (isset($_SESSION['user_id'])) {
                             </div>
                             <img class="rounded-circle mt-5" width="150px"
                                 src="/forotodo/assets/img/perfil2.png">
-                            <span class="font-weight-bold">Edogaru</span>
-                            <span class="text-black-50">edogaru@mail.com.my</span>
+                            <span class="font-weight-bold"><?php echo $username; ?></span>
+                            <span class="text-black-50"><?php echo $email; ?></span>
                             <span></span>
                             <button class="btn btn-primary mt-3" id="editPhotoBtn">Editar Foto</button>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 justify-content-end custom-position-right">
-                    <h4 class="card-title text-center">Modifica tus datos</h4>
-                        <form>
+                        <h4 class="card-title text-center">Modifica tus datos</h4>
+                        <form method="POST">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="Nombre" value="">
+                                        <input type="text" class="form-control" placeholder="<?php echo $nombre; ?>" value="<?php echo $nombre; ?>" name="nombre" id="nombre">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Nombre de Usuario</label>
-                                        <input type="text" class="form-control" value=""
-                                            placeholder="Nombre de Usuario">
+                                        <input type="text" class="form-control" placeholder="<?php echo $username; ?>" value="<?php echo $username; ?>" name="username" id="username">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" placeholder="Email" value="">
+                                        <input type="email" class="form-control" placeholder="<?php echo $email; ?>" value="<?php echo $email; ?>" name="email" id="email">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" placeholder="Contraseña" value="">
+                                        <input type="password" class="form-control" placeholder="Contraseña" value="" name="password" id="password">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-end">
-                                <button class="btn btn-primary" type="button">Guardar Perfil</button>
+                                <button class="btn btn-primary" type="submit">Guardar Perfil</button>
                             </div>
                         </form>
                     </div>
