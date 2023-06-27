@@ -24,7 +24,18 @@ if (isset($_SESSION['user_id'])) {
     $newUsername = $_POST['username'];
     $newEmail = $_POST['email'];
     $newPassword = $_POST['password'];
-    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    // Verificar si se ingresó un nuevo valor en el campo de contraseña
+    if (!empty($newPassword)) {
+      $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    } else {
+      // Si no se ingresó un nuevo valor en el campo de contraseña, obtener la contraseña existente
+      $existingPasswordQuery = $conn->prepare('SELECT password FROM users WHERE id = :id');
+      $existingPasswordQuery->bindParam(':id', $_SESSION['user_id']);
+      $existingPasswordQuery->execute();
+      $existingPasswordResult = $existingPasswordQuery->fetch(PDO::FETCH_ASSOC);
+      $hashedPassword = $existingPasswordResult['password'];
+    }
 
     $updateQuery = $conn->prepare('UPDATE users SET nombre = :nombre, user = :username, email = :email, password = :password WHERE id = :id');
     $updateQuery->bindParam(':nombre', $newNombre);

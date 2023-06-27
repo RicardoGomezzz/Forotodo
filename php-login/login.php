@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     
-    <?php require 'partials/header.php' ?>
+    <?php include 'partials/header.php' ?>
 
 
     <br><br><br><br><br>
