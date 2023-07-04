@@ -8,16 +8,18 @@ $email = null;
 $nombre = null;
 
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT id, user, email, nombre FROM users WHERE id = :id');
-  $records->bindParam(':id', $_SESSION['user_id']);
-  $records->execute();
-  $results = $records->fetch(PDO::FETCH_ASSOC);
-
-  if (count($results) > 0) {
-    $username = $results['user'];
-    $email = $results['email'];
-    $nombre = $results['nombre'];
-  }
+    $records = $conn->prepare('SELECT id, user, email, nombre, foto FROM users WHERE id = :id');
+    $records->bindParam(':id', $_SESSION['user_id']);
+    $records->execute();
+    $results = $records->fetch(PDO::FETCH_ASSOC);
+  
+    if (count($results) > 0) {
+      $username = $results['user'];
+      $email = $results['email'];
+      $nombre = $results['nombre'];
+      $foto = $results['foto']; 
+    }
+  
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newNombre = $_POST['nombre'];
@@ -79,16 +81,19 @@ if (isset($_SESSION['user_id'])) {
                     <div class="col-md-12">
                     </div>
                     <div class="col-md-3 align-self-start custom-position-left">
-                        <div class="d-flex flex-column align-items-center text-center p-3 py-5" style="margin-top: 30px;">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"
+                            style="margin-top: 30px;">
                             <div class="profile-title">
                                 <h4 class="card-title text-center">Mi Perfil</h4>
                             </div>
-                            <img class="rounded-circle mt-5" width="150px"
-                                src="/forotodo/assets/img/perfil2.png">
+                            <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $results['foto']; ?>">
                             <span class="font-weight-bold"><?php echo $username; ?></span>
                             <span class="text-black-50"><?php echo $email; ?></span>
-                            <span></span>
-                            <button class="btn btn-primary mt-3" id="editPhotoBtn">Editar Foto</button>
+                            <form method="POST" action="proce_img.php" enctype="multipart/form-data">
+                                <input type="file" name="photo" accept="image/*" style="display: none;" id="fileInput">
+                                <label for="fileInput" class="btn btn-primary mt-3">Editar Foto</label>
+                                <button class="btn btn-primary mt-3" type="submit" name="submit" style="display: none;">Guardar Foto</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 justify-content-end custom-position-right">
@@ -98,25 +103,29 @@ if (isset($_SESSION['user_id'])) {
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" placeholder="<?php echo $nombre; ?>" value="<?php echo $nombre; ?>" name="nombre" id="nombre">
+                                        <input type="text" class="form-control" placeholder="<?php echo $nombre; ?>"
+                                            value="<?php echo $nombre; ?>" name="nombre" id="nombre">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Nombre de Usuario</label>
-                                        <input type="text" class="form-control" placeholder="<?php echo $username; ?>" value="<?php echo $username; ?>" name="username" id="username">
+                                        <input type="text" class="form-control" placeholder="<?php echo $username; ?>"
+                                            value="<?php echo $username; ?>" name="username" id="username">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" placeholder="<?php echo $email; ?>" value="<?php echo $email; ?>" name="email" id="email">
+                                        <input type="email" class="form-control" placeholder="<?php echo $email; ?>"
+                                            value="<?php echo $email; ?>" name="email" id="email">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" placeholder="Contraseña" value="" name="password" id="password">
+                                        <input type="password" class="form-control" placeholder="Contraseña" value=""
+                                            name="password" id="password">
                                     </div>
                                 </div>
                             </div>
@@ -130,12 +139,10 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </div>
 
-    <!-- JavaScript para el botón de editar foto -->
     <script>
-    document.getElementById("editPhotoBtn").addEventListener("click", function() {
-        // Lógica para editar la foto de perfil
-        alert("Editar foto de perfil");
-    });
+        document.getElementById('fileInput').addEventListener('change', function () {
+            document.querySelector('button[name="submit"]').style.display = 'block';
+        });
     </script>
 
 </body>

@@ -75,7 +75,7 @@ $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php endforeach; ?>
 </div>
       </div>
-      <form method="POST" action="procesar_comentario.php">
+      <form method="POST" action="../php-publicaciones/procesar_comentario.php">
         <input type="hidden" name="publicacion_id" value="<?php echo $publication['id']; ?>">
         <input type="hidden" name="usuario" value="<?php echo $username; ?>">
         <div class="mb-3">
