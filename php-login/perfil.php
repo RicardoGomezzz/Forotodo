@@ -87,7 +87,7 @@ if (isset($_SESSION['user_id'])) {
                                 <h4 class="card-title text-center">Mi Perfil</h4>
                             </div>
                             <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $results['foto']; ?>">
-                            <span class="font-weight-bold"><?php echo $username; ?></span>
+                            <span class="font-weight-bold mt-4"><?php echo $username;?></span>
                             <span class="text-black-50"><?php echo $email; ?></span>
                             <form method="POST" action="proce_img.php" enctype="multipart/form-data">
                                 <input type="file" name="photo" accept="image/*" style="display: none;" id="fileInput">

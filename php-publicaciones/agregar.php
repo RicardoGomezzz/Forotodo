@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require 'remember.php';
-require 'db.php';
+require '../php-login/remember.php';
+require '../php-login/db.php';
 
 $username = null;
 
@@ -55,9 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Resto del código de la barra de navegación -->
-</nav>
+<?php include '../php-login/partials/nav.php'; ?>
 
 <div class="container">
   <h2>Agregar Publicación</h2>

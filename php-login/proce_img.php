@@ -25,6 +25,19 @@ if (isset($_SESSION['user_id'])) {
 
       // Mover el archivo al directorio de destino
       $uploadPath = $uploadDir . $newFileName;
+      
+      // Verificar si la foto ya existe en la base de datos
+      $existingPhotoQuery = $conn->prepare('SELECT foto FROM users WHERE id = :id');
+      $existingPhotoQuery->bindParam(':id', $_SESSION['user_id']);
+      $existingPhotoQuery->execute();
+      $existingPhotoResult = $existingPhotoQuery->fetch(PDO::FETCH_ASSOC);
+      $existingPhoto = $existingPhotoResult['foto'];
+      
+      if ($existingPhoto && $existingPhoto !== $newFileName) {
+        // Eliminar la foto anterior si existe y es diferente a la nueva
+        unlink($uploadDir . $existingPhoto);
+      }
+
       if (move_uploaded_file($fileTmpPath, $uploadPath)) {
         // Actualizar la columna de foto en la tabla users
         $updateQuery = $conn->prepare('UPDATE users SET foto = :foto WHERE id = :id');
