@@ -1,25 +1,30 @@
 <?php
 session_start();
 
-require '../php-login/db.php';
+require 'db.php';
 
 $username = null;
 $email = null;
 $nombre = null;
 
 if (isset($_SESSION['user_id'])) {
-    $records = $conn->prepare('SELECT id, user, email, nombre, foto FROM users WHERE id = :id');
-    $records->bindParam(':id', $_SESSION['user_id']);
-    $records->execute();
-    $results = $records->fetch(PDO::FETCH_ASSOC);
-  
-    if (count($results) > 0) {
-      $username = $results['user'];
-      $email = $results['email'];
-      $nombre = $results['nombre'];
-      $foto = $results['foto']; 
+  $records = $conn->prepare('SELECT id, user, email, nombre, foto FROM users WHERE id = :id');
+  $records->bindParam(':id', $_SESSION['user_id']);
+  $records->execute();
+  $results = $records->fetch(PDO::FETCH_ASSOC);
+
+  if (count($results) > 0) {
+    $username = $results['user'];
+    $email = $results['email'];
+    $nombre = $results['nombre'];
+    $foto = $results['foto'];
+
+    // Verificar si el usuario tiene una foto asignada
+    if (!$foto) {
+      // Asignar una foto predeterminada si no tiene foto
+      $foto = '../assets/img/perfil2.png'; // Reemplaza 'default.jpg' con el nombre de tu foto predeterminada
     }
-  
+  }
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newNombre = $_POST['nombre'];
@@ -86,14 +91,22 @@ if (isset($_SESSION['user_id'])) {
                             <div class="profile-title">
                                 <h4 class="card-title text-center">Mi Perfil</h4>
                             </div>
-                            <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $results['foto']; ?>">
-                            <span class="font-weight-bold mt-4"><?php echo $username;?></span>
+                            <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $foto; ?>">
+                            <span class="font-weight-bold mt-4"><?php echo $username; ?></span>
                             <span class="text-black-50"><?php echo $email; ?></span>
                             <form method="POST" action="proce_img.php" enctype="multipart/form-data">
                                 <input type="file" name="photo" accept="image/*" style="display: none;" id="fileInput">
                                 <label for="fileInput" class="btn btn-primary mt-3">Editar Foto</label>
-                                <button class="btn btn-primary mt-3" type="submit" name="submit" style="display: none;">Guardar Foto</button>
+                                <button class="btn btn-primary mt-3" type="submit" name="submit"
+                                    style="display: none;">Guardar Foto</button>
                             </form>
+                            <?php if ($foto !== '../assets/img/perfil2.png') : ?>
+                            <form method="POST" action="proce_img.php">
+                                <input type="hidden" name="delete_photo" value="true">
+                                <button class="btn btn-outline-danger" type="submit">Eliminar Foto</button>
+                            </form>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 justify-content-end custom-position-right">
@@ -140,9 +153,9 @@ if (isset($_SESSION['user_id'])) {
     </div>
 
     <script>
-        document.getElementById('fileInput').addEventListener('change', function () {
-            document.querySelector('button[name="submit"]').style.display = 'block';
-        });
+    document.getElementById('fileInput').addEventListener('change', function() {
+        document.querySelector('button[name="submit"]').style.display = 'block';
+    });
     </script>
 
 </body>
