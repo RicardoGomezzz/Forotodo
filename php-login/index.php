@@ -1,20 +1,19 @@
 <?php
 session_start();
 
-
 require 'db.php';
 
 $username = null;
 
-
 if (isset($_SESSION['user_id'])) {
-  $records = $conn->prepare('SELECT id, user, password FROM users WHERE id = :id');
+  $records = $conn->prepare('SELECT id, user, password, admin FROM users WHERE id = :id');
   $records->bindParam(':id', $_SESSION['user_id']);
   $records->execute();
   $results = $records->fetch(PDO::FETCH_ASSOC);
 
   if (count($results) > 0) {
     $username = $results['user'];
+    $isAdmin = $results['admin'];
   }
 }
 
@@ -25,17 +24,18 @@ $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Filtrar las publicaciones por tema si se ha enviado el parámetro
 if (isset($_GET['tema']) && $_GET['tema'] !== '') {
   $temaFiltrado = $_GET['tema'];
-  $publicaciones = array_filter($publicaciones, function($publication) use ($temaFiltrado) {
+  $publicaciones = array_filter($publicaciones, function ($publication) use ($temaFiltrado) {
     return $publication['tema'] === $temaFiltrado;
   });
 }
+
 // Obtener la fecha actual
 $fechaActual = date('Y-m-d');
 
 // Filtrar las publicaciones por tema y fecha si se han enviado los parámetros
 if (isset($_GET['tema']) && $_GET['tema'] !== '') {
   $temaFiltrado = $_GET['tema'];
-  $publicaciones = array_filter($publicaciones, function($publication) use ($temaFiltrado) {
+  $publicaciones = array_filter($publicaciones, function ($publication) use ($temaFiltrado) {
     return $publication['tema'] === $temaFiltrado;
   });
 }
@@ -47,7 +47,7 @@ if (isset($_GET['intervalo'])) {
     case '24h':
       // Filtrar por las últimas 24 horas
       $fechaInicio = date('Y-m-d H:i:s', strtotime('-24 hours'));
-      $publicaciones = array_filter($publicaciones, function($publication) use ($fechaInicio, $fechaActual) {
+      $publicaciones = array_filter($publicaciones, function ($publication) use ($fechaInicio, $fechaActual) {
         $fechaPublicacion = date('Y-m-d', strtotime($publication['fecha_publicacion']));
         return ($fechaPublicacion >= $fechaInicio && $fechaPublicacion <= $fechaActual);
       });
@@ -55,7 +55,7 @@ if (isset($_GET['intervalo'])) {
     case '1w':
       // Filtrar por la última semana
       $fechaInicio = date('Y-m-d H:i:s', strtotime('-1 week'));
-      $publicaciones = array_filter($publicaciones, function($publication) use ($fechaInicio, $fechaActual) {
+      $publicaciones = array_filter($publicaciones, function ($publication) use ($fechaInicio, $fechaActual) {
         $fechaPublicacion = date('Y-m-d', strtotime($publication['fecha_publicacion']));
         return ($fechaPublicacion >= $fechaInicio && $fechaPublicacion <= $fechaActual);
       });
@@ -63,7 +63,7 @@ if (isset($_GET['intervalo'])) {
     case '1m':
       // Filtrar por el último mes
       $fechaInicio = date('Y-m-d H:i:s', strtotime('-1 month'));
-      $publicaciones = array_filter($publicaciones, function($publication) use ($fechaInicio, $fechaActual) {
+      $publicaciones = array_filter($publicaciones, function ($publication) use ($fechaInicio, $fechaActual) {
         $fechaPublicacion = date('Y-m-d', strtotime($publication['fecha_publicacion']));
         return ($fechaPublicacion >= $fechaInicio && $fechaPublicacion <= $fechaActual);
       });
