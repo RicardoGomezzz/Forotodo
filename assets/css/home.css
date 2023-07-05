@@ -18,3 +18,11 @@ body {
   font-size: 12px;
   color: gray;
 }
+.image-container {
+  max-width: 100%;
+  height: auto;
+}
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}

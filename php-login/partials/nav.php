@@ -20,9 +20,15 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Navegar</a>
         </li>
+      <?php if (isset($_SESSION['user_id'])): ?>
         <li class="nav-item">
-          <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar Publicacion</a>
+        <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar publicación</a>
         </li>
+      <?php else: ?>
+        <li class="nav-item">
+        <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Agregar publicación</a>
+        </li>
+      <?php endif; ?>
       </ul>
     </div>
     <div class="justify-content-end">
