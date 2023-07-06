@@ -63,8 +63,8 @@ if (isset($_POST['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD de Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/forotodo/assets/css/usuarios.css" rel="stylesheet" type="text/css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link href="/forotodo/assets/css/usuarios.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -75,6 +75,9 @@ if (isset($_POST['edit'])) {
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Tabla de Usuarios</h2>
+                <div class="d-flex justify-content-start" id="btnAgregar">
+                    <a href="agregar-usuario.php" class="btn btn-info">Agregar Usuario</a>
+                </div>
                 <table class="table table-striped">
                     <thead>
                         <tr>

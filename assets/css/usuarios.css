@@ -26,3 +26,15 @@ body{
     overflow: hidden;
     padding: 30px;
 }
+
+#btnAgregar{
+    background-color: white;
+    margin-bottom: 1px;
+}
+
+.btn {
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 8px 16px;
+    font-size: 14px;
+  }

@@ -28,6 +28,12 @@ $nombre = $usuario['nombre'];
 
 $foto = $usuario['foto'];
 
+ // Verificar si el usuario tiene una foto asignada
+ if (!$foto) {
+    // Asignar una foto predeterminada si no tiene foto
+    $foto = '../assets/img/perfil2.png'; // Reemplaza 'default.jpg' con el nombre de tu foto predeterminada
+  }
+
 // Procesar la actualización del usuario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['username'];
