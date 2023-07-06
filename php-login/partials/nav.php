@@ -29,13 +29,18 @@
         <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Agregar publicación</a>
         </li>
       <?php endif; ?>
+      <?php if (isset($_SESSION['admin']) && $_SESSION['admin']): ?>
+        <li class="nav-item">
+          <a class="nav-link" href="/forotodo/php-login/crud-usuarios.php">Usuarios</a>
+        </li>
+      <?php endif; ?>
       </ul>
     </div>
     <div class="justify-content-end">
       <ul class="navbar-nav">
         <?php if ($username): ?>
           <li class="nav-item">
-            <a class="nav-link" href="/forotodo/php-login/perfil.php"><?php echo $username; ?></a>
+            <a class="nav-link <?php echo $_SESSION['admin'] ? 'text-info' : ''; ?>" href="/forotodo/php-login/perfil.php"><?php echo $username; ?></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="logout.php">Cerrar sesión</a>
@@ -50,5 +55,6 @@
         <?php endif; ?>
       </ul>
     </div>
+
   </div>
 </nav>

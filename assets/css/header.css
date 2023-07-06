@@ -1,0 +1,17 @@
+header {
+    border-bottom: 2px solid #eee;
+    padding: 20px 0;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    background-color:cadetblue;
+  }
+  header a {
+    text-decoration: none;
+    color: aliceblue;
+    font-family: "Roboto", Arial, sans-serif; 
+    font-size: 20px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+  }

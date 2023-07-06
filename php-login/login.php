@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password'])) {
       $_SESSION['user_id'] = $user['id'];
-
+    
       // Si se seleccionó "Recordar sesión"
       if (!empty($_POST['recordar'])) {
         // Establece una cookie con el ID de usuario y su duración
@@ -62,21 +62,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           setcookie('user_id', '', time() - 3600);
         }
       }
-
-      if ($user['admin']) {
-        // Usuario admin
+    
+      $_SESSION['admin'] = ($user['admin'] == 1); // Almacena el valor booleano en la sesión
+    
+      if ($_SESSION['admin']) { // Verifica si el usuario es administrador
         header("Location: /forotodo/php-login/index.php?admin=true");
       } else {
-        // Usuario regular
         header("Location: /forotodo/php-login/index.php");
       }
       exit;
     } else {
       $message = 'Las credenciales no coinciden ;(';
-    }
+    }    
   }
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -129,7 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="d-flex align-itsems-center gap-3">
           <input class="form-check-input" type="checkbox" name="recordar">
           <div class="pt-1" style="font-size: 0.9rem;">Recuérdame</div>
-          <a href="#" class="pt-1 text-decoration-none text-info fw-semibold fst-italic" style="font-size: 0.9rem;">¿Olvidaste tu contraseña?</a>
         </div>
       </div>
       <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
