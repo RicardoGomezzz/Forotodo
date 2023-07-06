@@ -66,15 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body style="background-color: dark;">
 
-    <?php include 'partials/header.php' ?>
+    <?php include 'partials/nav.php'; ?>
 
     <div class="container mt-5">
         <div class="card">
             <div class="card-body">
                 <div class="row mt-4">
-                <div class="col-md-12">
-                    <a class="btn btn-secondary mb-3 crud-btn" href="crud-usuarios.php"><i class="bi bi-arrow-left"></i> Volver al CRUD</a>
-                </div>
+                    <div class="col-md-12">
+                        <a class="btn btn-secondary mb-3 crud-btn" href="crud-usuarios.php"><i
+                                class="bi bi-arrow-left"></i> Volver al CRUD</a>
+                    </div>
                     <div class="col-md-12"></div>
                     <div class="col-md-3 align-self-start custom-position-left">
                         <div class="d-flex flex-column align-items-center text-center p-3 py-5"

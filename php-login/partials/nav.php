@@ -9,6 +9,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
     <div class="container-fluid d-flex justify-content-center align-items-center">
+        <!-- Agregada la clase align-items-center -->
         <!-- Logo -->
         <a class="navbar-brand mx-auto" href="/forotodo/php-login/index.php">ForoTodo</a>
 
