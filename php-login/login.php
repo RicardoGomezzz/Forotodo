@@ -22,6 +22,7 @@ if (isset($_COOKIE['user_id'])) {
 
   if ($user) {
     $_SESSION['user_id'] = $user['id'];
+    $_SESSION['username'] = $user['user']; // Almacenar el nombre de usuario en la sesión
     header("Location: /forotodo/php-login/index.php");
     exit;
   } else {
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = 'Por favor, completa todos los campos';
   } else {
     // Verificar si el usuario está intentando iniciar sesión como administrador
-    $query = "SELECT id, email, password, admin FROM users WHERE email = :email OR user = :user";
+    $query = "SELECT id, user, email, password, admin FROM users WHERE email = :email OR user = :user";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':email', $emailOrUsername);
     $stmt->bindParam(':user', $emailOrUsername);
@@ -50,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password'])) {
       $_SESSION['user_id'] = $user['id'];
+      $_SESSION['username'] = $user['user']; // Almacenar el nombre de usuario en la sesión
     
       // Si se seleccionó "Recordar sesión"
       if (!empty($_POST['recordar'])) {
@@ -73,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       exit;
     } else {
       $message = 'Las credenciales no coinciden ;(';
-    }    
+    }      
   }
 }
 ?>

@@ -1,7 +1,7 @@
-/* Importar la fuente de Google Fonts */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
 
-/* Estilos para la barra de navegación */
+
 .custom-navbar {
   font-size: 20px;
   height: 80px;
@@ -53,3 +53,18 @@
 .custom-navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-color: #ccc;
 }
+
+.nav-item{
+  width: fit-content;
+}
+
+.nav-user{
+  flex-wrap: wrap;
+  padding: 1px;
+}
+
+.navbarNav{
+  width: fit-content;
+  flex: auto;
+}
+

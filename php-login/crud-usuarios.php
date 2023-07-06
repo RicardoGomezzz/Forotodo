@@ -9,8 +9,11 @@ if (!isset($_SESSION['user_id']) || !$_SESSION['admin']) {
 
 require 'db.php';
 
-// Obtener todos los usuarios de la base de datos
-$stmt = $conn->query('SELECT id, user, email FROM users');
+// Obtener el nombre de usuario actual de la sesión
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
+
+// Obtener todos los usuarios no administradores de la base de datos
+$stmt = $conn->query('SELECT id, user, email FROM users WHERE admin = 0');
 $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Procesar la eliminación de un usuario
@@ -50,6 +53,7 @@ if (isset($_POST['edit'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,36 +62,38 @@ if (isset($_POST['edit'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CRUD de Usuarios</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="/forotodo/assets/css/usuarios.css" href="style.css">
 </head>
 <body>
 
 <?php include 'partials/nav.php'; ?>
 
-<div class="container">
+<div class="container" id="tabContainer">
   <h2>Tabla de Usuarios</h2>
   <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Email</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($usuarios as $usuario): ?>
-      <tr>
-        <td><?php echo $usuario['id']; ?></td>
-        <td><?php echo $usuario['user']; ?></td>
-        <td><?php echo $usuario['email']; ?></td>
-        <td>
-          <a href="editar-usuario.php?id=<?php echo $usuario['id']; ?>" class="btn btn-primary">Editar</a>
-          <a href="?delete=<?php echo $usuario['id']; ?>" class="btn btn-danger">Eliminar</a>
-        </td>
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Email</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($usuarios as $usuario): ?>
+    <tr>
+      <th scope="row"><?php echo $usuario['id']; ?></th>
+      <td><?php echo $usuario['user']; ?></td>
+      <td><?php echo $usuario['email']; ?></td>
+      <td>
+        <a href="editar-usuario.php?id=<?php echo $usuario['id']; ?>" class="btn btn-primary">Editar</a>
+        <a href="?delete=<?php echo $usuario['id']; ?>" class="btn btn-danger">Eliminar</a>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+
 </div>
 
 </body>

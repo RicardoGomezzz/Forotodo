@@ -4,13 +4,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
-  <div class="container-fluid">
+  <div class="container-fluid d-flex justify-content-center align-items-center">
+    <!-- Logo -->
     <a class="navbar-brand mx-auto" href="/forotodo/php-login/index.php">ForoTodo</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+
+
+    <!-- Contenido de la navbar -->
+    <div class="collapse navbar-collapse justify-content-center mx-auto" id="navbarNav">
       <ul class="navbar-nav">
+        <!-- Elementos de la navbar -->
         <li class="nav-item">
           <a class="nav-link" href="/forotodo/php-login/index.php">Inicio</a>
         </li>
@@ -20,27 +22,34 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Navegar</a>
         </li>
-      <?php if (isset($_SESSION['user_id'])): ?>
-        <li class="nav-item">
-        <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar publicación</a>
-        </li>
-      <?php else: ?>
-        <li class="nav-item">
-        <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Agregar publicación</a>
-        </li>
-      <?php endif; ?>
-      <?php if (isset($_SESSION['admin']) && $_SESSION['admin']): ?>
-        <li class="nav-item">
-          <a class="nav-link" href="/forotodo/php-login/crud-usuarios.php">Usuarios</a>
-        </li>
-      <?php endif; ?>
+
+        <!-- Elemento para agregar publicación -->
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar publicación</a>
+          </li>
+        <?php else: ?>
+          <li class="nav-item">
+            <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Agregar publicación</a>
+          </li>
+        <?php endif; ?>
+
+        <!-- Elemento para administradores -->
+        <?php if (isset($_SESSION['admin']) && $_SESSION['admin']): ?>
+          <li class="nav-item">
+            <a class="nav-link" href="/forotodo/php-login/crud-usuarios.php">Usuarios</a>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
-    <div class="justify-content-end">
+
+    <!-- Sección derecha de la navbar -->
+    <div class="ml-auto">
       <ul class="navbar-nav">
+        <!-- Elementos de inicio de sesión y registro -->
         <?php if ($username): ?>
           <li class="nav-item">
-            <a class="nav-link <?php echo $_SESSION['admin'] ? 'text-info' : ''; ?>" href="/forotodo/php-login/perfil.php"><?php echo $username; ?></a>
+            <a class="nav-link <?php echo $_SESSION['admin'] ? 'text-info' : ''; ?>" id="nav-user" href="/forotodo/php-login/perfil.php"><?php echo $username; ?></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="logout.php">Cerrar sesión</a>
@@ -55,6 +64,5 @@
         <?php endif; ?>
       </ul>
     </div>
-
   </div>
 </nav>
