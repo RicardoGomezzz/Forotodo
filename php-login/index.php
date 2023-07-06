@@ -12,8 +12,10 @@ if (isset($_SESSION['user_id'])) {
   $results = $records->fetch(PDO::FETCH_ASSOC);
 
   if (count($results) > 0) {
-    $username = $results['user'];
+    $_SESSION['username'] = $results['user'];
     $isAdmin = $results['admin'];
+  } else {
+    $isAdmin = false;
   }
 }
 

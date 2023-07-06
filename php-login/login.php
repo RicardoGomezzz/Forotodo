@@ -14,7 +14,7 @@ if (isset($_COOKIE['user_id'])) {
   $user_id = $_COOKIE['user_id'];
 
   // Buscar al usuario en la base de datos por su ID
-  $query = "SELECT id FROM users WHERE id = :user_id";
+  $query = "SELECT id, user FROM users WHERE id = :user_id";
   $stmt = $conn->prepare($query);
   $stmt->bindParam(':user_id', $user_id);
   $stmt->execute();
@@ -52,22 +52,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($password, $user['password'])) {
       $_SESSION['user_id'] = $user['id'];
       $_SESSION['username'] = $user['user']; // Almacenar el nombre de usuario en la sesión
-    
+
       // Si se seleccionó "Recordar sesión"
       if (!empty($_POST['recordar'])) {
-        // Establece una cookie con el ID de usuario y su duración
+        // Establecer una cookie con el ID de usuario y su duración
         $cookie_duration = 30 * 24 * 60 * 60; // 30 días en segundos
         setcookie('user_id', $user['id'], time() + $cookie_duration);
       } else {
-        // Elimina la cookie "user_id" si existe
+        // Eliminar la cookie "user_id" si existe
         if (isset($_COOKIE['user_id'])) {
           setcookie('user_id', '', time() - 3600);
         }
       }
-    
-      $_SESSION['admin'] = ($user['admin'] == 1); // Almacena el valor booleano en la sesión
-    
-      if ($_SESSION['admin']) { // Verifica si el usuario es administrador
+
+      $_SESSION['admin'] = ($user['admin'] == 1); // Almacenar el valor booleano en la sesión
+
+      if ($_SESSION['admin']) { // Verificar si el usuario es administrador
         header("Location: /forotodo/php-login/index.php?admin=true");
       } else {
         header("Location: /forotodo/php-login/index.php");

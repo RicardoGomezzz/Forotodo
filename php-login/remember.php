@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];
 
     // Buscar al usuario en la base de datos por su ID
-    $query = "SELECT id FROM users WHERE id = :user_id";
+    $query = "SELECT id, admin FROM users WHERE id = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
@@ -14,6 +14,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id'])) {
     if ($user) {
         // Iniciar la sesión del usuario
         $_SESSION['user_id'] = $user['id'];
+
+        // Establecer el valor booleano de admin en la sesión
+        $_SESSION['admin'] = ($user['admin'] == 1);
 
         // Renovar la cookie de "Recuerda mi sesión" para extender su duración
         $cookie_duration = 30 * 24 * 60 * 60; // 30 días en segundos
@@ -24,3 +27,4 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id'])) {
     }
 }
 ?>
+
