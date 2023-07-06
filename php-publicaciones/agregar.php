@@ -72,13 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     imagedestroy($imagen); // Destruir la imagen original
   }
-
+  
   // Insertar la publicación en la base de datos
-  $stmt = $conn->prepare("INSERT INTO publicaciones (titulo, contenido, imagen, tema) VALUES (:titulo, :contenido, :imagen, :tema)");
+  
+  $stmt = $conn->prepare("INSERT INTO publicaciones (titulo, contenido, imagen, tema, user_id) VALUES (:titulo, :contenido, :imagen, :tema, :user_id)");
   $stmt->bindParam(':titulo', $titulo);
   $stmt->bindParam(':contenido', $contenido);
   $stmt->bindParam(':imagen', $imagen_ruta);
   $stmt->bindParam(':tema', $tema);
+  $stmt->bindParam(':user_id', $_SESSION['user_id']);
   $stmt->execute();
 
   // Redireccionar al index o a la página deseada después de agregar la publicación

@@ -18,7 +18,8 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Obtener las publicaciones ordenadas por fecha de publicación
-$stmt = $conn->query('SELECT id, titulo, contenido, imagen, fecha_publicacion, tema FROM publicaciones ORDER BY fecha_publicacion DESC');
+$stmt = $conn->prepare('SELECT p.id, p.titulo, p.contenido, p.imagen, p.fecha_publicacion, p.tema, p.user_id, u.user AS autor FROM publicaciones p JOIN users u ON p.user_id = u.id ORDER BY p.fecha_publicacion DESC');
+$stmt->execute();
 $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Filtrar las publicaciones por tema si se ha enviado el parámetro
@@ -123,10 +124,17 @@ if (isset($_GET['intervalo'])) {
       <button type="submit" class="btn btn-primary">Filtrar</button>
     </div>
   </form>
+  <?php
+// Verificar si el usuario está logueado
+if (isset($_SESSION['user_id'])) {
+  $loggedUserId = $_SESSION['user_id'];
+}
+?>
   <?php foreach ($publicaciones as $publication): ?>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Autor: <?php echo $publication['autor']; ?></h5>
+      <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
         <p class="card-text">Tema: <?php echo $publication['tema']; ?></p>
         <?php if (!empty($publication['imagen']) && file_exists($_SERVER['DOCUMENT_ROOT'].'/ForoTodo/assets/'.$publication['imagen'])): ?>
         <div class="image-container">
@@ -172,6 +180,10 @@ if (isset($_GET['intervalo'])) {
         <p>Por favor, <a href="/forotodo/php-login/login.php?redirect=index.php">inicia sesión</a> para agregar un comentario.</p>
       <?php endif; ?>
     </div>
+    <?php if (isset($_SESSION['user_id']) && $publication['user_id'] == $_SESSION['user_id']): ?>
+  <a href="editar_publicacion.php?id=<?php echo $publication['id']; ?>">Editar</a>
+  <a href="eliminar_publicacion.php?id=<?php echo $publication['id']; ?>">Eliminar</a>
+<?php endif; ?>
   <?php endforeach; ?>
 </div>
 </body>
