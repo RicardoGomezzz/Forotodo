@@ -1,3 +1,7 @@
+<?php 
+  require 'remember.php';
+?>
+
 <link href="/foroTodo/assets/css/nav.css" rel="stylesheet" type="text/css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

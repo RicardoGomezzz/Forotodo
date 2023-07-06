@@ -3,6 +3,8 @@ require 'db.php';
 
 session_start();
 
+require 'remember.php';
+
 // Verificar si ya hay una sesión activa
 if (isset($_SESSION['user_id'])) {
   header("Location: /forotodo/php-login/index.php");

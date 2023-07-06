@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id'])) {
         // Iniciar la sesión del usuario
         $_SESSION['user_id'] = $user['id'];
 
-        // Establecer el valor booleano de admin en la sesión
+        // Establecer el valor booleano "admin" en la sesión
         $_SESSION['admin'] = ($user['admin'] == 1);
 
         // Renovar la cookie de "Recuerda mi sesión" para extender su duración
@@ -27,4 +27,3 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['user_id'])) {
     }
 }
 ?>
-
