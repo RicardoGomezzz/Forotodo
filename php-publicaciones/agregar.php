@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-    <?php include '/forotodo/php-login/partials/nav.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/ForoTodo/php-login/partials/nav.php'; ?>
 
     <div class="container">
         <h2>Agregar Publicación</h2>

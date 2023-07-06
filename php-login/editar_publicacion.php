@@ -15,6 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar_publicacion'])
     $stmt->bindParam(':contenido', $contenido);
     $stmt->bindParam(':publicacionId', $publicacionId);
     $stmt->execute();
+
+    // Redirigir al índice después de guardar los cambios
+    header("Location: index.php");
+    exit();
   } else {
     // El usuario no ha iniciado sesión
     // Redirigir o mostrar un mensaje de error
@@ -36,7 +40,6 @@ if (!$publicacion) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>

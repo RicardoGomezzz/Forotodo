@@ -1,5 +1,5 @@
 <?php 
-  require 'remember.php';
+require __DIR__ . '/../remember.php';
 ?>
 
 <link href="/foroTodo/assets/css/nav.css" rel="stylesheet" type="text/css">

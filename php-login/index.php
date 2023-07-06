@@ -13,6 +13,7 @@ if (isset($_SESSION['user_id'])) {
 
   if (count($results) > 0) {
     $_SESSION['username'] = $results['user'];
+    $username = $_SESSION['username']; // Actualizar el valor de $username
     $isAdmin = $results['admin'];
   } else {
     $isAdmin = false;
