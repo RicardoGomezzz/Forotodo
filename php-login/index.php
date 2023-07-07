@@ -86,7 +86,6 @@ if (isset($_GET['intervalo'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,11 +109,11 @@ if (isset($_GET['intervalo'])) {
   <h2>Publicaciones</h2>
   <br>
   <form method="GET" action="">
-  <div class="mb-3">
-    <label for="buscar">Buscar publicación:</label>
-    <input type="text" id="buscar" name="buscar" placeholder="Ingrese el término de búsqueda">
-    <br>
-    <label for="tema">Filtrar por tema:</label>
+    <div class="mb-3">
+      <label for="buscar">Buscar publicación:</label>
+      <input type="text" id="buscar" name="buscar" placeholder="Ingrese el término de búsqueda">
+      <br>
+      <label for="tema">Filtrar por tema:</label>
       <select name="tema" id="tema">
         <option value="">Todos los temas</option>
         <option value="Tecnologia">Tecnología</option>
@@ -123,89 +122,82 @@ if (isset($_GET['intervalo'])) {
         <option value="Música">Música</option>
       </select>
       <br>
-    <div class="mb-3">
-      <label for="intervalo">Filtrar por intervalo de tiempo:</label>
-    <div>
-      <input type="radio" id="24h" name="intervalo" value="24h">
-      <label for="24h">Últimas 24 horas</label>
-    </div>
-    <div>
-      <input type="radio" id="1w" name="intervalo" value="1w">
-      <label for="1w">Última semana</label>
-    </div>
-    <div>
-      <input type="radio" id="1m" name="intervalo" value="1m">
-      <label for="1m">Último mes</label>
-    </div>
-    </div>
+      <div class="mb-3">
+        <label for="intervalo">Filtrar por intervalo de tiempo:</label>
+        <div>
+          <input type="radio" id="24h" name="intervalo" value="24h">
+          <label for="24h">Últimas 24 horas</label>
+        </div>
+        <div>
+          <input type="radio" id="1w" name="intervalo" value="1w">
+          <label for="1w">Última semana</label>
+        </div>
+        <div>
+          <input type="radio" id="1m" name="intervalo" value="1m">
+          <label for="1m">Último mes</label>
+        </div>
+      </div>
       <button type="submit" class="btn btn-primary">Filtrar</button>
     </div>
   </form>
-  <?php
-// Verificar si el usuario está logueado
-if (isset($_SESSION['user_id'])) {
-  $loggedUserId = $_SESSION['user_id'];
-}
-?>
-  <?php foreach ($publicaciones as $publication): ?>
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Autor: <?php echo $publication['autor']; ?></h5>
-      <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
-        <p class="card-text">Tema: <?php echo $publication['tema']; ?></p>
-        <?php if (!empty($publication['imagen']) && file_exists($_SERVER['DOCUMENT_ROOT'].'/ForoTodo/assets/'.$publication['imagen'])): ?>
-        <div class="image-container">
-          <img src="/ForoTodo/assets/<?php echo $publication['imagen']; ?>" alt="Imagen de la publicación" class="img-responsive">
-        </div>      
-        <?php endif; ?>
-      <?php if (empty($publication['imagen'])): ?>
-        <!-- Aquí no se muestra nada cuando no hay imagen -->
-      <?php endif; ?>
-        <p class="card-text"><?php echo $publication['contenido']; ?></p>
-        <p class="card-text">Fecha de publicación: <?php echo $publication['fecha_publicacion']; ?></p>
+  <div class="row">
+    <?php foreach ($publicaciones as $publication): ?>
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Autor: <?php echo $publication['autor']; ?></h5>
+          <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
+          <p class="card-text">Tema: <?php echo $publication['tema']; ?></p>
+          <?php if (!empty($publication['imagen']) && file_exists($_SERVER['DOCUMENT_ROOT'].'/ForoTodo/assets/'.$publication['imagen'])): ?>
+          <div class="image-container">
+            <img src="/ForoTodo/assets/<?php echo $publication['imagen']; ?>" alt="Imagen de la publicación" class="img-responsive">
+          </div>
+          <?php endif; ?>
+          <?php if (empty($publication['imagen'])): ?>
+          <!-- Aquí no se muestra nada cuando no hay imagen -->
+          <?php endif; ?>
+          <p class="card-text"><?php echo $publication['contenido']; ?></p>
+          <p class="card-text">Fecha de publicación: <?php echo $publication['fecha_publicacion']; ?></p>
 
-        <?php
-        // Recuperar los comentarios de la publicación actual
-        $comentariosStmt = $conn->prepare("SELECT * FROM comentarios WHERE publicacion_id = :publicacionId");
-        $comentariosStmt->bindParam(':publicacionId', $publication['id']);
-        $comentariosStmt->execute();
-        $comentarios = $comentariosStmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
+          <?php
+          // Recuperar los comentarios de la publicación actual
+          $comentariosStmt = $conn->prepare("SELECT * FROM comentarios WHERE publicacion_id = :publicacionId");
+          $comentariosStmt->bindParam(':publicacionId', $publication['id']);
+          $comentariosStmt->execute();
+          $comentarios = $comentariosStmt->fetchAll(PDO::FETCH_ASSOC);
+          ?>
 
-      <!-- Mostrar los comentarios -->
-      <div class="comentarios">
-      <?php foreach ($comentarios as $comentario): ?>
-      <div class="comentario">
-      <strong><?php echo $comentario['usuario']; ?>:</strong>
-      <?php echo $comentario['contenido']; ?>
-    </div>
-  <?php endforeach; ?>
-</div>
-      </div>
-      
-      <?php if (isset($_SESSION['user_id'])): ?>
-      <form method="POST" action="../php-publicaciones/procesar_comentario.php">
-        <input type="hidden" name="publicacion_id" value="<?php echo $publication['id']; ?>">
-        <input type="hidden" name="usuario" value="<?php echo $username; ?>">
-        <div class="mb-3">
-        <label for="comentario">Comentario:</label>
-        <textarea class="form-control" id="comentario" name="comentario" rows="3" required></textarea>
+          <!-- Mostrar los comentarios -->
+          <div class="comentarios">
+            <?php foreach ($comentarios as $comentario): ?>
+            <div class="comentario">
+              <strong><?php echo $comentario['usuario']; ?>:</strong>
+              <?php echo $comentario['contenido']; ?>
+            </div>
+            <?php endforeach; ?>
+          </div>
+
+          <?php if (isset($_SESSION['user_id'])): ?>
+          <form method="POST" action="../php-publicaciones/procesar_comentario.php">
+            <input type="hidden" name="publicacion_id" value="<?php echo $publication['id']; ?>">
+            <input type="hidden" name="usuario" value="<?php echo $username; ?>">
+            <div class="mb-3">
+              <label for="comentario">Comentario:</label>
+              <textarea class="form-control" id="comentario" name="comentario" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar comentario</button>
+          </form>
+          <?php else: ?>
+          <p>Por favor, <a href="/forotodo/php-login/login.php?redirect=index.php">inicia sesión</a> para agregar un comentario.</p>
+          <?php endif; ?>
+
         </div>
-        <button type="submit" class="btn btn-primary">Enviar comentario</button>
-      </form>
-      <?php else: ?>
-        <p>Por favor, <a href="/forotodo/php-login/login.php?redirect=index.php">inicia sesión</a> para agregar un comentario.</p>
-      <?php endif; ?>
+      </div>
     </div>
-    <?php if (isset($_SESSION['user_id']) && $publication['user_id'] == $_SESSION['user_id']): ?>
-  <a href="editar_publicacion.php?id=<?php echo $publication['id']; ?>">Editar</a>
-  <a href="eliminar_publicacion.php?id=<?php echo $publication['id']; ?>">Eliminar</a>
-<?php endif; ?>
-  <?php endforeach; ?>
+    <?php endforeach; ?>
+  </div>
 </div>
-    </div>
-</body>
-</html>
+
 
 </body>
 </html>
