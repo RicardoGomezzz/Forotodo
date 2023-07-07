@@ -12,8 +12,18 @@ require 'db.php';
 // Obtener el nombre de usuario actual de la sesión
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
-// Obtener todos los usuarios no administradores de la base de datos
-$stmt = $conn->query('SELECT id, user, email FROM users WHERE admin = 0 ORDER BY id');
+// Configuración de paginación
+$rowsPerPage = 9;
+$totalRows = $conn->query('SELECT count(*) FROM users WHERE admin = 0')->fetchColumn();
+$totalPages = ceil($totalRows / $rowsPerPage);
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($currentPage - 1) * $rowsPerPage;
+
+// Obtener usuarios para la página actual
+$stmt = $conn->prepare('SELECT id, user, email FROM users WHERE admin = 0 ORDER BY id LIMIT :offset, :rowsPerPage');
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindValue(':rowsPerPage', $rowsPerPage, PDO::PARAM_INT);
+$stmt->execute();
 $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Procesar la eliminación de un usuario
@@ -64,7 +74,7 @@ if (isset($_POST['edit'])) {
     <title>CRUD de Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link href="/forotodo/assets/css/usuarios.css" rel="stylesheet" type="text/css">
+    <link href="/foroTodo/assets/css/usuarios.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -75,7 +85,7 @@ if (isset($_POST['edit'])) {
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Tabla de Usuarios</h2>
-                <div class="d-flex justify-content-start" id="btnAgregar">
+                <div class="d-flex justify-content-start" id="btnAgregar" style="margin-top: 30px;">
                     <a href="agregar-usuario.php" class="btn btn-info">Agregar Usuario</a>
                 </div>
                 <table class="table table-striped">
@@ -96,13 +106,74 @@ if (isset($_POST['edit'])) {
                             <td>
                                 <a href="editar-usuario.php?id=<?php echo $usuario['id']; ?>"
                                     class="btn btn-sm btn-info"><i class="fi fi-rr-pen-square"></i></a>
-                                <a href="?delete=<?php echo $usuario['id']; ?>" class="btn btn-sm btn-danger"><i
-                                        class="fi fi-rr-delete-user"></i></a>
+                                <button class="btn btn-sm btn-danger"
+                                    onclick="openConfirmModal(<?php echo $usuario['id']; ?>)"><i
+                                        class="fi fi-rr-delete-user"></i></button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <!-- Paginación -->
+                <nav>
+                    <ul class="pagination justify-content-center mt-2">
+                        <?php if ($currentPage > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo ($currentPage - 1); ?>">Anterior</a>
+                        </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?php echo ($i === $currentPage) ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                        <?php endfor; ?>
+
+                        <?php if ($currentPage < $totalPages): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo ($currentPage + 1); ?>">Siguiente</a>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+                <!-- Modal de confirmación de eliminación -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">Confirmar eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de eliminar este usuario?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+
+                <script>
+                function openConfirmModal(userId) {
+                    var confirmModal = document.getElementById('confirmModal');
+                    var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+                    confirmDeleteBtn.addEventListener('click', function() {
+                        window.location.href = '?delete=' + userId;
+                    });
+
+                    var bootstrapModal = new bootstrap.Modal(confirmModal);
+                    bootstrapModal.show();
+                }
+                </script>
             </div>
         </div>
     </div>

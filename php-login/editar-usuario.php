@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Modificar Usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link href="/foroTodo/assets/css/perfil2.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -80,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <a class="btn btn-secondary mb-3 crud-btn" href="crud-usuarios.php"><i
-                                class="bi bi-arrow-left"></i> Volver al CRUD</a>
+                                class="fi fi-rr-angle-left"></i> Volver al CRUD</a>
                     </div>
                     <div class="col-md-12"></div>
                     <div class="col-md-3 align-self-start custom-position-left">

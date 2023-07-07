@@ -9,92 +9,93 @@ require 'remember.php';
 if (isset($_SESSION['user_id'])) {
     header("Location: /forotodo/php-login/index.php");
     exit;
-  }
-  
-  // Verificar si ya existe una cookie con una sesión activa
-  if (isset($_COOKIE['user_id'])) {
+}
+
+// Verificar si ya existe una cookie con una sesión activa
+if (isset($_COOKIE['user_id'])) {
     $user_id = $_COOKIE['user_id'];
-  
+
     // Buscar al usuario en la base de datos por su ID
     $query = "SELECT id FROM users WHERE id = :user_id";
     $stmt = $conn->prepare($query);
     $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-  
+
     if ($user) {
-      $_SESSION['user_id'] = $user['id'];
-      header("Location: /forotodo/php-login/index.php");
-      exit;
+        $_SESSION['user_id'] = $user['id'];
+        header("Location: /forotodo/php-login/index.php");
+        exit;
     } else {
-      // Eliminar la cookie "user_id" si el usuario no existe en la base de datos
-      setcookie('user_id', '', time() - 3600);
+        // Eliminar la cookie "user_id" si el usuario no existe en la base de datos
+        setcookie('user_id', '', time() - 3600);
     }
-  }
+}
 
 require 'remember.php';
 
 $userError = $emailError = $passwordError = $confirmPasswordError = $nombreError = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $user = $_POST['user'];
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $confirmPassword = $_POST['confirm_password'];
-  $nombre = $_POST['nombre'];
+    $user = $_POST['user'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
+    $nombre = $_POST['nombre'];
 
-  // Validar que todos los campos estén completos
-  if (empty($user) || empty($email) || empty($password) || empty($confirmPassword) || empty($nombre)) {
-    $message = 'Por favor, completa todos los campos del formulario.';
-  } else {
-    // Validar la longitud de la contraseña
-    if (strlen($password) < 8) {
-      $passwordError = 'La contraseña debe tener al menos 8 caracteres.';
-    }
-
-    // Verificar que las contraseñas sean iguales
-    if ($password !== $confirmPassword) {
-      $confirmPasswordError = 'Las contraseñas no coinciden.';
-    }
-
-    // Si no hay errores, continuar con el proceso de registro
-    if (empty($passwordError) && empty($confirmPasswordError)) {
-      // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
-      $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
-      $checkStmt = $conn->prepare($checkQuery);
-      $checkStmt->bindParam(':user', $user);
-      $checkStmt->bindParam(':email', $email);
-      $checkStmt->execute();
-      $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
-
-      if ($existingUser) {
-        if ($existingUser['user'] === $user) {
-          $userError = 'El nombre de usuario ya está en uso.';
-        } elseif ($existingUser['email'] === $email) {
-          $emailError = 'La dirección de correo electrónico ya está en uso.';
+    // Validar que todos los campos estén completos
+    if (empty($user) || empty($email) || empty($password) || empty($confirmPassword) || empty($nombre)) {
+        $message = 'Por favor, completa todos los campos del formulario.';
+    } else {
+        // Validar la longitud de la contraseña
+        if (strlen($password) < 8) {
+            $passwordError = 'La contraseña debe tener al menos 8 caracteres.';
         }
-      } else {
-        // Si pasa todas las validaciones, insertar los datos en la base de datos
-        $sql = "INSERT INTO users (user, email, password, nombre) VALUES (:user, :email, :password, :nombre)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':user', $user);
-        $stmt->bindParam(':email', $email);
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':nombre', $nombre);
 
-        if ($stmt->execute()) {
-          $message = 'Usuario creado con éxito, ya puedes iniciar sesión';
-          $messageClass = 'success';
-        } else {
-          $message = 'Ha ocurrido un error al crear su cuenta';
-          $messageClass = 'error';
+        // Verificar que las contraseñas sean iguales
+        if ($password !== $confirmPassword) {
+            $confirmPasswordError = 'Las contraseñas no coinciden.';
         }
-      }
+
+        // Si no hay errores, continuar con el proceso de registro
+        if (empty($passwordError) && empty($confirmPasswordError)) {
+            // Verificar si el usuario o la dirección de correo electrónico ya existen en la base de datos
+            $checkQuery = "SELECT * FROM users WHERE user = :user OR email = :email LIMIT 1";
+            $checkStmt = $conn->prepare($checkQuery);
+            $checkStmt->bindParam(':user', $user);
+            $checkStmt->bindParam(':email', $email);
+            $checkStmt->execute();
+            $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existingUser) {
+                if ($existingUser['user'] === $user) {
+                    $userError = 'El nombre de usuario ya está en uso.';
+                } elseif ($existingUser['email'] === $email) {
+                    $emailError = 'La dirección de correo electrónico ya está en uso.';
+                }
+            } else {
+                // Si pasa todas las validaciones, insertar los datos en la base de datos
+                $insertQuery = "INSERT INTO users (user, email, password, nombre) VALUES (:user, :email, :password, :nombre)";
+                $insertStmt = $conn->prepare($insertQuery);
+                $insertStmt->bindParam(':user', $user);
+                $insertStmt->bindParam(':email', $email);
+                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $insertStmt->bindParam(':password', $hashedPassword);
+                $insertStmt->bindParam(':nombre', $nombre);
+
+                if ($insertStmt->execute()) {
+                    $message = 'Usuario creado con éxito, ya puedes iniciar sesión';
+                    $messageClass = 'success';
+                } else {
+                    $message = 'Ha ocurrido un error al crear su cuenta';
+                    $messageClass = 'error';
+                }
+            }
+        }
     }
-  }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,9 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
-    <?php include 'partials/header.php' ?>
+<?php include 'partials/header.php' ?>
 
+<body>
     <br><br><br>
 
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">

@@ -98,11 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
+<?php include 'partials/header.php' ?>
+
 <body>
-
-  <?php include 'partials/header.php' ?>
-
-
   <br><br><br><br><br>
 
   <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
@@ -131,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input class="form-control bg-light" type="password" name="password" placeholder="Contraseña">
       </div>
       <br>
-      <div class="d-flex justify-content-around mt-1">
+      <div class="d-flex justify-content-start mt-1">
         <div class="d-flex align-itsems-center gap-3">
           <input class="form-check-input" type="checkbox" name="recordar">
           <div class="pt-1" style="font-size: 0.9rem;">Recuérdame</div>

@@ -18,6 +18,9 @@ header {
 
   body{
     background-color: #333;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
   }
 
   div .input-group-text{
