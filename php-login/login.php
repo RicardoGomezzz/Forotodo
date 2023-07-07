@@ -100,14 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-
     <?php include 'partials/header.php' ?>
 
-    <div class="container bg-white p-5 rounded-5 shadow-sm mt-5 mx-auto justify-content-center align-items-center"
+    <div class="custom-container bg-white p-5 rounded-5 shadow-sm mt-5 mx-auto justify-content-center align-items-center"
         style="max-width: 400px;">
         <div class="text-center">
             <img src="/forotodo/assets/img/perfil.png" alt="login-icon" class="mb-4" style="height: 7rem;">
-            <h1 class="fw-bold">Inicia sesión</h1>
+            <h1 class="fw-bold" style="margin-bottom: 1.5rem;">Inicia sesión</h1>
         </div>
 
         <?php if (!empty($message)) : ?>

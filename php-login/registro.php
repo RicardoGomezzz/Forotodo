@@ -108,17 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
-    <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
+    <link href="/foroTodo/assets/css/registro.css" rel="stylesheet" type="text/css">
 </head>
 
-<?php include 'partials/header.php' ?>
-
 <body>
-    <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
-        <div class="d-flex justify-content-center">
-            <img src="/forotodo/assets/img/agregar-usuario.png" alt="login-icon" style="height: 7rem;">
+    <?php include 'partials/header.php' ?>
+
+    <div class="custom-container bg-white p-5 rounded-5 shadow-sm mt-5 mx-auto custom-form-container"
+        style="max-width: 30rem;">
+        <div class="text-center">
+            <img src="/forotodo/assets/img/agregar-usuario.png" alt="login-icon" class="mb-4" style="height: 7rem;">
+            <h1 class="text-center fs-1 fw-bold" style="margin-bottom: 1.5rem;">Registra tu cuenta</h1>
         </div>
-        <div class="text-center fs-1 fw-bold">Registra tu cuenta</div>
+
         <div class="text-center my-3">
             <?php if (!empty($message)): ?>
             <div class="alert <?= ($messageClass === 'success') ? 'alert-success' : 'alert-danger'; ?>" role="alert">
@@ -153,58 +155,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <form action="/forotodo/php-login/registro.php" method="POST">
-            <div class="input-group mt-4">
-                <div class="input-group-text ">
-                    <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control bg-light <?php if (!empty($userError)) echo ''; ?>" type="text"
+                        name="user" placeholder="Usuario" value="<?= $user ?? '' ?>">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($userError)) echo ''; ?>" type="text" name="user"
-                    placeholder="Usuario" value="<?= $user ?? '' ?>">
             </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text ">
-                    <img src="/forotodo/assets/img/nombre.png" alt="nombre-icon" style="height: 1rem;">
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/nombre.png" alt="nombre-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control bg-light <?php if (!empty($nombreError)) echo ''; ?>" type="text"
+                        name="nombre" placeholder="Nombre" value="<?= $nombre ?? '' ?>">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($nombreError)) echo ''; ?>" type="text"
-                    name="nombre" placeholder="Nombre" value="<?= $nombre ?? '' ?>">
             </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text ">
-                    <img src="/forotodo/assets/img/email.png" alt="email-icon" style="height: 1rem;">
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/email.png" alt="email-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control bg-light <?php if (!empty($emailError)) echo ''; ?>" type="email"
+                        name="email" placeholder="Correo electrónico" value="<?= $email ?? '' ?>">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($emailError)) echo ''; ?>" type="email"
-                    name="email" placeholder="Correo electrónico" value="<?= $email ?? '' ?>">
             </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text ">
-                    <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control bg-light <?php if (!empty($passwordError)) echo ''; ?>" type="password"
+                        name="password" placeholder="Contraseña">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($passwordError)) echo ''; ?>" type="password"
-                    name="password" placeholder="Contraseña">
             </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text ">
-                    <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control bg-light <?php if (!empty($confirmPasswordError)) echo ''; ?>"
+                        type="password" name="confirm_password" placeholder="Confirmar contraseña">
                 </div>
-                <input class="form-control bg-light <?php if (!empty($confirmPasswordError)) echo ''; ?>"
-                    type="password" name="confirm_password" placeholder="Confirmar contraseña">
             </div>
+
             <div class="text-center mt-4">
                 <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm"
                     style="background-color: cadetblue">Registrarse</button>
             </div>
         </form>
-        <br>
-        <div class="d-flex gap-2 justify-content-center mt-1">
+
+        <div class="text-center mt-4">
             <div style="font-size: 0.9rem;">¿Ya tienes cuenta?</div>
             <a href="/forotodo/php-login/login.php" style="font-size: 0.9rem;"
                 class="text-decoration-none text-info fw-semibold fst-italic">Inicia Sesión</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-QHRII9W4mEfaU9qT5TPnpT6OiIvS2x5bhUTSJzJ8YTK+YO/WQBYzzgqTQWIrUPMf" crossorigin="anonymous">
-    </script>
 </body>
 
-</html>
 
+</html>
