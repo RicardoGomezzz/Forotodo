@@ -1,7 +1,3 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
-
-
 .custom-navbar {
   text-decoration: none;
   color: aliceblue;
@@ -23,7 +19,7 @@
 }
 
 .custom-navbar .navbar-nav .nav-link {
-  padding: auto;
+  padding: 5px 10px;
   transition: background-color 0.3s, opacity 0.3s;
   border-radius: 5px;
   text-decoration: none;
@@ -81,4 +77,8 @@
   flex: auto;
 }
 
-
+@media (max-width: 767px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+}

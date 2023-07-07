@@ -98,7 +98,7 @@ if (isset($_GET['intervalo'])) {
   <link href="/forotodo/assets/css/home.css" rel="stylesheet" type="text/css"> 
   <link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
