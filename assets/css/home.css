@@ -1,3 +1,4 @@
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 body {
   margin: 0;
   padding: 0;
@@ -46,4 +47,49 @@ body::-webkit-scrollbar-thumb:hover {
 .img-responsive {
   max-width: 100%;
   height: auto;
+}
+.card {
+  position: relative;
+}
+
+.card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.card-actions .btn {
+  margin-left: 5px;
+}
+
+.edit-icon i:before {
+  content: "\f303"; /* Código del icono de edición */
+}
+
+.delete-icon i:before {
+  content: "\f2ed"; /* Código del icono de eliminación */
+}
+
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+}
+
+.grid-item {
+  padding: 10px;
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .grid-item {
+    width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-item {
+    width: 33.33%;
+  }
 }

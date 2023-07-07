@@ -73,6 +73,24 @@ if (isset($_SESSION['user_id'])) {
     <title>Perfil de Usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/foroTodo/assets/css/perfil.css" rel="stylesheet" type="text/css">
+    <style>
+        /* Estilos generales */
+        .custom-container {
+            margin-top: 30px;
+        }
+
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 767px) {
+            .custom-position-left {
+                order: 2;
+            }
+
+            .custom-position-right {
+                order: 1;
+                margin-top: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -83,8 +101,6 @@ if (isset($_SESSION['user_id'])) {
         <div class="card">
             <div class="card-body">
                 <div class="row mt-4">
-                    <div class="col-md-12">
-                    </div>
                     <div class="col-md-3 align-self-start custom-position-left">
                         <div class="d-flex flex-column align-items-center text-center p-3 py-5"
                             style="margin-top: 30px;">
