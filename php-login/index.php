@@ -20,10 +20,20 @@ if (isset($_SESSION['user_id'])) {
   }
 }
 
+
 // Obtener las publicaciones ordenadas por fecha de publicación
 $stmt = $conn->prepare('SELECT p.id, p.titulo, p.contenido, p.imagen, p.fecha_publicacion, p.tema, p.user_id, u.user AS autor FROM publicaciones p JOIN users u ON p.user_id = u.id ORDER BY p.fecha_publicacion DESC');
 $stmt->execute();
 $publicaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Verificar si se ha enviado un término de búsqueda
+if (isset($_GET['buscar']) && $_GET['buscar'] !== '') {
+  $terminoBusqueda = $_GET['buscar'];
+
+  // Filtrar las publicaciones por término de búsqueda
+  $publicaciones = array_filter($publicaciones, function ($publication) use ($terminoBusqueda) {
+    return stripos($publication['titulo'], $terminoBusqueda) !== false || stripos($publication['contenido'], $terminoBusqueda) !== false;
+  });
+}
 
 // Filtrar las publicaciones por tema si se ha enviado el parámetro
 if (isset($_GET['tema']) && $_GET['tema'] !== '') {
@@ -100,8 +110,11 @@ if (isset($_GET['intervalo'])) {
   <h2>Publicaciones</h2>
   <br>
   <form method="GET" action="">
-    <div class="mb-3">
-      <label for="tema">Filtrar por tema:</label>
+  <div class="mb-3">
+    <label for="buscar">Buscar publicación:</label>
+    <input type="text" id="buscar" name="buscar" placeholder="Ingrese el término de búsqueda">
+    <br>
+    <label for="tema">Filtrar por tema:</label>
       <select name="tema" id="tema">
         <option value="">Todos los temas</option>
         <option value="Tecnologia">Tecnología</option>
@@ -109,6 +122,7 @@ if (isset($_GET['intervalo'])) {
         <option value="Cine">Cine</option>
         <option value="Música">Música</option>
       </select>
+      <br>
     <div class="mb-3">
       <label for="intervalo">Filtrar por intervalo de tiempo:</label>
     <div>
@@ -189,6 +203,7 @@ if (isset($_SESSION['user_id'])) {
 <?php endif; ?>
   <?php endforeach; ?>
 </div>
+    </div>
 </body>
 </html>
 
