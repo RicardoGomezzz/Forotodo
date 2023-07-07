@@ -26,13 +26,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/forotodo/php-login/index.php">Inicio</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Noticias</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Navegar</a>
-                </li>
-
+                
                 <!-- Elemento para administradores -->
                 <?php if (isset($_SESSION['admin']) && $_SESSION['admin']): ?>
                 <li class="nav-item">
