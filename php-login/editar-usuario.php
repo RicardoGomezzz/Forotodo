@@ -83,30 +83,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <a class="btn btn-secondary mb-3 crud-btn" href="crud-usuarios.php"><i
                                 class="fi fi-rr-angle-left"></i> Volver al CRUD</a>
                     </div>
-                    <div class="col-md-12"></div>
-                    <div class="col-md-3 align-self-start custom-position-left">
-                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"
-                            style="margin-top: 30px;">
-                            <div class="profile-title">
-                                <h4 class="card-title text-center">Perfil de usuario</h4>
+                    <?php if (isset($_SESSION['admin']) && $_SESSION['admin']) : ?>
+                        <div class="col-md-3 align-self-start custom-position-left">
+                            <div class="d-flex flex-column align-items-center text-center p-3 py-5"
+                                style="margin-top: 30px;">
+                                <div class="profile-title">
+                                    <h4 class="card-title text-center">Perfil de usuario</h4>
+                                </div>
+                                <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $foto; ?>">
+                                <span class="font-weight-bold mt-4"><?php echo $username; ?></span>
+                                <span class="text-black-50"><?php echo $email; ?></span>
+                                <form method="POST" action="proce_img.php" enctype="multipart/form-data">
+                                    <input type="file" name="photo" accept="image/*" style="display: none;"
+                                        id="fileInput">
+                                    <label for="fileInput" class="btn btn-primary mt-3">Editar Foto</label>
+                                    <button class="btn btn-primary mt-3" type="submit" name="submit"
+                                        style="display: none;">Guardar Foto</button>
+                                </form>
+                                <?php if ($foto !== '../assets/img/perfil2.png') : ?>
+                                <form method="POST" action="proce_img.php">
+                                    <input type="hidden" name="delete_photo" value="true">
+                                    <button class="btn btn-outline-danger" type="submit">Eliminar Foto</button>
+                                </form>
+                                <?php endif; ?>
                             </div>
-                            <img class="rounded-circle mt-5" width="150px" src="/forotodo/Image/<?php echo $foto; ?>">
-                            <span class="font-weight-bold mt-4"><?php echo $username; ?></span>
-                            <span class="text-black-50"><?php echo $email; ?></span>
-                            <form method="POST" action="proce_img.php" enctype="multipart/form-data">
-                                <input type="file" name="photo" accept="image/*" style="display: none;" id="fileInput">
-                                <label for="fileInput" class="btn btn-primary mt-3">Editar Foto</label>
-                                <button class="btn btn-primary mt-3" type="submit" name="submit"
-                                    style="display: none;">Guardar Foto</button>
-                            </form>
-                            <?php if ($foto !== '../assets/img/perfil2.png') : ?>
-                            <form method="POST" action="proce_img.php">
-                                <input type="hidden" name="delete_photo" value="true">
-                                <button class="btn btn-outline-danger" type="submit">Eliminar Foto</button>
-                            </form>
-                            <?php endif; ?>
                         </div>
-                    </div>
+                    <?php endif; ?>
                     <div class="col-md-6 col-lg-6 justify-content-end custom-position-right">
                         <h4 class="card-title text-center">Modificar datos del usuario</h4>
                         <form method="POST">
@@ -148,7 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 

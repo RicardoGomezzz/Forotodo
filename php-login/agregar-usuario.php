@@ -88,81 +88,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-
     <header>
         <?php include 'partials/nav.php'; ?>
     </header>
 
-    <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
-        <div class="text-center fw-bold" id="title">Agregar Usuario</div>
-        <div class="text-center my-3">
-            <?php if (!empty($message)): ?>
-            <div class="alert <?= ($messageClass === 'success') ? 'alert-success' : 'alert-danger'; ?>" role="alert">
-                <?= $message; ?>
+    <div class="container">
+        <div class="custom-container bg-white p-5 rounded-5 shadow mx-auto" style="max-width: 30rem;">
+            <div class="text-center fw-bold" id="title">Agregar Usuario</div>
+            <div class="text-center my-3">
+                <?php if (!empty($message)): ?>
+                <div class="alert <?= ($messageClass === 'success') ? 'alert-success' : 'alert-danger'; ?>"
+                    role="alert">
+                    <?= $message; ?>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($userError)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $userError ?>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($emailError)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $emailError ?>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($passwordError)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $passwordError ?>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($confirmPasswordError)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $confirmPasswordError ?>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($nombreError)) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $nombreError ?>
+                </div>
+                <?php endif; ?>
             </div>
-            <?php endif; ?>
-            <?php if (!empty($userError)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $userError ?>
-            </div>
-            <?php endif; ?>
-            <?php if (!empty($emailError)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $emailError ?>
-            </div>
-            <?php endif; ?>
-            <?php if (!empty($passwordError)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $passwordError ?>
-            </div>
-            <?php endif; ?>
-            <?php if (!empty($confirmPasswordError)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $confirmPasswordError ?>
-            </div>
-            <?php endif; ?>
-            <?php if (!empty($nombreError)) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $nombreError ?>
-            </div>
-            <?php endif; ?>
-        </div>
 
-        <form action="/forotodo/php-login/agregar-usuario.php" method="POST">
-            <div class="input-group mt-4">
-                <div class="input-group-text">
-                    <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
+            <form action="/forotodo/php-login/agregar-usuario.php" method="POST">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
+                        </span>
+                        <input class="form-control" type="text" name="email_or_username" placeholder="Correo o Usuario">
+                    </div>
                 </div>
-                <input class="form-control bg-light <?php if (!empty($userError)) echo ''; ?>" type="text" name="user"
-                    placeholder="Usuario" value="<?= $user ?? '' ?>">
-            </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text">
-                    <img src="/forotodo/assets/img/nombre.png" alt="nombre-icon" style="height: 1rem;">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <img src="/forotodo/assets/img/nombre.png" alt="nombre-icon" style="height: 1rem;">
+                        </span>
+                        <input class="form-control" type="text" name="nombre" placeholder="Nombre"
+                            value="<?= $nombre ?? '' ?>">
+                    </div>
                 </div>
-                <input class="form-control bg-light <?php if (!empty($nombreError)) echo ''; ?>" type="text"
-                    name="nombre" placeholder="Nombre" value="<?= $nombre ?? '' ?>">
-            </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text">
-                    <img src="/forotodo/assets/img/email.png" alt="email-icon" style="height: 1rem;">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <img src="/forotodo/assets/img/email.png" alt="email-icon" style="height: 1rem;">
+                        </span>
+                        <input class="form-control" type="email" name="email" placeholder="Correo electrónico"
+                            value="<?= $email ?? '' ?>">
+                    </div>
                 </div>
-                <input class="form-control bg-light <?php if (!empty($emailError)) echo ''; ?>" type="email"
-                    name="email" placeholder="Correo electrónico" value="<?= $email ?? '' ?>">
-            </div>
-            <div class="input-group mt-2">
-                <div class="input-group-text">
-                    <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <img src="/forotodo/assets/img/pass.png" alt="pass-icon" style="height: 1rem;">
+                        </span>
+                        <input class="form-control" type="password" name="password" placeholder="Contraseña">
+                    </div>
                 </div>
-                <input class="form-control bg-light <?php if (!empty($passwordError)) echo ''; ?>" type="password"
-                    name="password" placeholder="Contraseña">
-            </div>
-            <div class="text-center mt-4">
-                <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm"
-                    style="background-color: cadetblue">Confirmar</button>
-            </div>
-        </form>
+                <div class="text-center mt-4">
+                    <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold"
+                        style="background-color: cadetblue">Confirmar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
+
+
+
 
 </html>

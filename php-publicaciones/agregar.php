@@ -98,11 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro - Barra de Navegación</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/card2.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body >
 
+<header>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/ForoTodo/php-login/partials/nav.php'; ?>
+</header>
 
     <div class="container">
         <h2>Agregar Publicación</h2>

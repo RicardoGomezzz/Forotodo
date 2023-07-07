@@ -37,12 +37,11 @@
                 <!-- Elemento para agregar publicación -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Agregar publicación</a>
+                    <a class="nav-link" href="/forotodo/php-publicaciones/agregar.php">Crear</a>
                 </li>
                 <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Agregar
-                        publicación</a>
+                    <a class="nav-link" href="/forotodo/php-login/login.php?redirect=agregar.php">Crear</a>
                 </li>
                 <?php endif; ?>
             </ul>
