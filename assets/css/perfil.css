@@ -3,6 +3,7 @@ body {
     padding: 0;
     overflow: hidden;
     background-color: cadetblue;
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;

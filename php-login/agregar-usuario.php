@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
 
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
-        <div class="text-center fs-1 fw-bold" id="title">Agregar Usuario</div>
+        <div class="text-center fw-bold" id="title">Agregar Usuario</div>
         <div class="text-center my-3">
             <?php if (!empty($message)): ?>
             <div class="alert <?= ($messageClass === 'success') ? 'alert-success' : 'alert-danger'; ?>" role="alert">

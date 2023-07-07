@@ -89,60 +89,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio De Sesión</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
-  <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio De Sesión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link href="/foroTodo/assets/css/login.css" rel="stylesheet" type="text/css">
 </head>
 
-<?php include 'partials/header.php' ?>
-
 <body>
-  <br><br><br><br><br>
 
-  <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 25rem;">
-    <div class="d-flex justify-content-center">
-      <img src="/forotodo/assets/img/perfil.png" alt="login-icon" style="height: 7rem;">
-    </div>
-    <div class="text-center fs-1 fw-bold">Inicia sesión</div>
-    <div class="text-center">
-      <?php if (!empty($message)) : ?>
+    <?php include 'partials/header.php' ?>
+
+    <div class="container bg-white p-5 rounded-5 shadow-sm mt-5 mx-auto justify-content-center align-items-center"
+        style="max-width: 400px;">
+        <div class="text-center">
+            <img src="/forotodo/assets/img/perfil.png" alt="login-icon" class="mb-4" style="height: 7rem;">
+            <h1 class="fw-bold">Inicia sesión</h1>
+        </div>
+
+        <?php if (!empty($message)) : ?>
         <div class="alert alert-danger mt-3" role="alert">
-          <?= $message ?>
+            <?= $message ?>
         </div>
-      <?php endif; ?>
+        <?php endif; ?>
+
+        <form action="/forotodo/php-login/login.php" method="POST">
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control" type="text" name="email_or_username" placeholder="Correo o Usuario">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <img src="/forotodo/assets/img/pass.png" alt="password-icon" style="height: 1rem;">
+                    </span>
+                    <input class="form-control" type="password" name="password" placeholder="Contraseña">
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" name="recordar" id="rememberCheck">
+                <label class="form-check-label" for="rememberCheck">Recuérdame</label>
+            </div>
+
+            <button type="submit" class="btn text-white w-100 mt-4 fw-semibold shadow-sm btn-block"
+                style="background-color: cadetblue;">Ingresar</button>
+        </form>
+
+        <div class="text-center mt-4">
+            ¿No tienes cuenta? <a href="/forotodo/php-login/registro.php"
+                class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
+        </div>
     </div>
-    <form action="/forotodo/php-login/login.php" method="POST">
-      <div class="input-group mt-4">
-        <div class="input-group-text">
-          <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
-        </div>
-        <input class="form-control bg-light" type="text" name="email_or_username" placeholder="Correo o Usuario">
-      </div>
-      <div class="input-group mt-2">
-        <div class="input-group-text ">
-          <img src="/forotodo/assets/img/pass.png" alt="user-icon" style="height: 1rem;">
-        </div>
-        <input class="form-control bg-light" type="password" name="password" placeholder="Contraseña">
-      </div>
-      <br>
-      <div class="d-flex justify-content-start mt-1">
-        <div class="d-flex align-itsems-center gap-3">
-          <input class="form-check-input" type="checkbox" name="recordar">
-          <div class="pt-1" style="font-size: 0.9rem;">Recuérdame</div>
-        </div>
-      </div>
-      <button type="submit" value="send" class="btn text-white w-100 mt-4 fw-semibold shadow-sm" style="background-color: cadetblue">Ingresar</button>
-    </form>
-    <br>
-    <div class="d-flex gap-2 justify-content-center mt-1">
-      <div style="font-size: 0.9rem;">¿No tienes cuenta?</div>
-      <a href="/forotodo/php-login/registro.php" style="font-size: 0.9rem;" class="text-decoration-none text-info fw-semibold fst-italic">Regístrate</a>
-    </div>
-  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

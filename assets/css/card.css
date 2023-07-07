@@ -1,5 +1,6 @@
 body {
     background-color: #333;
+    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -15,10 +16,10 @@ body {
   
 #title {
     text-align: center;
-    font-size: 10px;
+    font-size: 20px;
     margin-bottom: 20px;
     color: #333;
-    font-family: "Poppins", sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     font-weight: bold;
     border-radius: 10px;

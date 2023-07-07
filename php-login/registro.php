@@ -114,8 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include 'partials/header.php' ?>
 
 <body>
-    <br><br><br>
-
     <div class="container bg-white p-5 rounded-5 shadow mx-auto m-auto" style="width: 30rem;">
         <div class="d-flex justify-content-center">
             <img src="/forotodo/assets/img/agregar-usuario.png" alt="login-icon" style="height: 7rem;">
