@@ -1,6 +1,5 @@
 @import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
-
 body {
     background-color: #333;
     display: flex;
@@ -42,48 +41,45 @@ body {
     margin-top: 30px;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 888px) {
     body {
-      padding-top: 20px;
+        padding-top: 20px;
     }
-  
+
     .container {
-      margin: 0 10px;
-      max-width: 100%;
+        margin: 0 10px;
+        max-width: 100%;
+        margin-bottom: 20px;
     }
-  
+
     .card {
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      padding: 15px;
-      margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        padding: 15px;
     }
-  
+
     .table-responsive {
-      overflow-x: auto;
-      margin-bottom: 0;
+        overflow-x: auto;
+        margin-bottom: 0;
     }
-  
+
     .table {
-      width: 100%;
-      white-space: nowrap;
-      margin-bottom: 0;
+        width: 100%;
+        white-space: nowrap;
+        margin-bottom: 0;
     }
-  
+
     @media (max-width: 360px) {
-      .container {
-        margin: 0 5px;
-      }
+        .container {
+            margin: 0 5px;
+        }
     }
-  
+
     @media (max-width: 360px) and (max-height: 740px) {
-      .container {
-        margin-top: 50px;
-      }
+        .container {
+            margin-top: 50px;
+            padding-top: 100px;
+        }
     }
-  }
-  
-  
-
-
+}

@@ -160,8 +160,8 @@ if (isset($_POST['edit'])) {
                 </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-                <script
-                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
                 <script>
                 function openConfirmModal(userId) {
@@ -175,6 +175,23 @@ if (isset($_POST['edit'])) {
                     var bootstrapModal = new bootstrap.Modal(confirmModal);
                     bootstrapModal.show();
                 }
+                </script>
+                <script>
+                $(document).ready(function() {
+                    adjustContainerMargin();
+
+                    $(window).on('resize', function() {
+                        adjustContainerMargin();
+                    });
+
+                    function adjustContainerMargin() {
+                        var windowHeight = $(window).height();
+                        var marginSize = windowHeight *
+                        0.05; // Ajusta el tamaño del margen según tus necesidades
+
+                        $('#container').css('margin-top', marginSize + 'px');
+                    }
+                });
                 </script>
             </div>
         </div>
