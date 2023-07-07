@@ -78,42 +78,43 @@ if (isset($_POST['edit'])) {
 </head>
 
 <body>
-
     <?php include 'partials/nav.php'; ?>
 
     <div class="container">
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Tabla de Usuarios</h2>
-                <div class="d-flex justify-content-start" id="btnAgregar" style="margin-top: 30px;">
+                <div class="d-flex justify-content-start" id="btnAgregar">
                     <a href="agregar-usuario.php" class="btn btn-info">Agregar Usuario</a>
                 </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($usuarios as $usuario): ?>
-                        <tr>
-                            <th scope="row"><?php echo $usuario['id']; ?></th>
-                            <td><?php echo $usuario['user']; ?></td>
-                            <td><?php echo $usuario['email']; ?></td>
-                            <td>
-                                <a href="editar-usuario.php?id=<?php echo $usuario['id']; ?>"
-                                    class="btn btn-sm btn-info"><i class="fi fi-rr-pen-square"></i></a>
-                                <button class="btn btn-sm btn-danger"
-                                    onclick="openConfirmModal(<?php echo $usuario['id']; ?>)"><i
-                                        class="fi fi-rr-delete-user"></i></button>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($usuarios as $usuario): ?>
+                            <tr>
+                                <th scope="row"><?php echo $usuario['id']; ?></th>
+                                <td><?php echo $usuario['user']; ?></td>
+                                <td><?php echo $usuario['email']; ?></td>
+                                <td>
+                                    <a href="editar-usuario.php?id=<?php echo $usuario['id']; ?>"
+                                        class="btn btn-sm btn-info"><i class="fi fi-rr-pen-square"></i></a>
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="openConfirmModal(<?php echo $usuario['id']; ?>)"><i
+                                            class="fi fi-rr-delete-user"></i></button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
                 <!-- Paginación -->
                 <nav>
                     <ul class="pagination justify-content-center mt-2">
@@ -159,7 +160,8 @@ if (isset($_POST['edit'])) {
                 </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
+                <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"></script>
 
                 <script>
                 function openConfirmModal(userId) {
@@ -177,7 +179,7 @@ if (isset($_POST['edit'])) {
             </div>
         </div>
     </div>
-
 </body>
+
 
 </html>

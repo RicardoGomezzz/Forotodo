@@ -5,7 +5,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
 <link href="/foroTodo/assets/css/nav.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Agrega la versión correcta de Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark custom-navbar">
@@ -61,7 +60,7 @@
                 <li class="nav-item">
                     <?php if (isset($_SESSION['admin']) && $_SESSION['admin']): ?>
                     <a class="nav-link text-info" id="nav-user"
-                        href="/forotodo/php-login/perfil.php"><?php echo $_SESSION['username']; ?></a>
+                        href="#"><?php echo $_SESSION['username']; ?></a>
                     <?php else: ?>
                     <a class="nav-link" id="nav-user"
                         href="/forotodo/php-login/perfil.php"><?php echo $_SESSION['username']; ?></a>

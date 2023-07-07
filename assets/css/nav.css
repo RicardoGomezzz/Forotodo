@@ -65,6 +65,7 @@
 
 .nav-item{
   width: fit-content;
+  white-space: nowrap;
 }
 
 .nav-user{
@@ -76,6 +77,7 @@
   width: fit-content;
   flex: auto;
 }
+
 
 @media (max-width: 767px) {
   .navbar-nav {
