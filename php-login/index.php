@@ -158,9 +158,9 @@ if (isset($_GET['intervalo'])) {
         <h5 class="card-title">Autor: <?php echo $publication['autor']; ?></h5>
         <h5 class="card-title"><?php echo $publication['titulo']; ?></h5>
         <p class="card-text">Tema: <?php echo $publication['tema']; ?></p>
-        <?php if (!empty($publication['imagen']) && file_exists($_SERVER['DOCUMENT_ROOT'].'/ForoTodo/assets/'.$publication['imagen'])): ?>
+        <?php if (!empty($publication['imagen']) && file_exists($_SERVER['DOCUMENT_ROOT'].'/ForoTodo/Img/'.$publication['imagen'])): ?>
         <div class="image-container">
-          <img src="/ForoTodo/assets/<?php echo $publication['imagen']; ?>" alt="Imagen de la publicación" class="img-responsive">
+          <img src="/ForoTodo/Img/<?php echo $publication['imagen']; ?>" alt="Imagen de la publicación" class="img-responsive">
         </div>
         <?php endif; ?>
         <?php if (empty($publication['imagen'])): ?>

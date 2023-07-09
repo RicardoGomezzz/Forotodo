@@ -12,7 +12,8 @@ if (!isset($_SESSION['user_id']) || !$_SESSION['admin']) {
 $userError = $emailError = $passwordError = $nombreError = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user = $_POST['user'];
+    // Obtener los valores de los campos del formulario
+    $user = isset($_POST['email_or_username']) ? $_POST['email_or_username'] : '';
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -135,7 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <span class="input-group-text">
                             <img src="/forotodo/assets/img/usuario.png" alt="user-icon" style="height: 1rem;">
                         </span>
-                        <input class="form-control" type="text" name="email_or_username" placeholder="Correo o Usuario">
+                        <input class="form-control" type="text" name="email_or_username" placeholder="Correo o Usuario"
+                            value="<?= $user ?? '' ?>">
                     </div>
                 </div>
                 <div class="mb-3">

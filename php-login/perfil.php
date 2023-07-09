@@ -74,12 +74,10 @@ if (isset($_SESSION['user_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/foroTodo/assets/css/perfil.css" rel="stylesheet" type="text/css">
     <style>
-        /* Estilos generales */
         .custom-container {
             margin-top: 30px;
         }
 
-        /* Estilos para dispositivos móviles */
         @media (max-width: 767px) {
             .custom-position-left {
                 order: 2;

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $contenido = $_POST['contenido'];
   $tema = $_POST['tema'];
   $imagen_temporal = $_FILES['imagen']['tmp_name'];
-  $carpeta_destino = '../assets/img/';
+  $carpeta_destino = '../Image/';
   $imagen_ruta = '';
 
   $maxSize = 2 * 1024 * 1024; // Tamaño máximo permitido en bytes (2 MB en este caso)
